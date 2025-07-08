@@ -19,11 +19,11 @@
     <Filter Include="Header Files\Extended">
       <UniqueIdentifier>{b89aad2a-0bdc-496f-b11e-8038341e8f30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Extra">
-      <UniqueIdentifier>{c516d8e2-445f-42d8-a918-3929a479975f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Extra">
+    <Filter Include="Header Files\etc">
       <UniqueIdentifier>{2170291e-eee3-4eba-a3f3-04916e936fc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\etc">
+      <UniqueIdentifier>{c516d8e2-445f-42d8-a918-3929a479975f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,10 +31,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Fourier.cpp">
-      <Filter>Source Files\Extra</Filter>
+      <Filter>Source Files\etc</Filter>
     </ClCompile>
     <ClCompile Include="Randomizer.cpp">
-      <Filter>Source Files\Extra</Filter>
+      <Filter>Source Files\etc</Filter>
     </ClCompile>
     <ClCompile Include="DebugUtlities.cpp">
       <Filter>Source Files</Filter>
@@ -107,9 +107,6 @@
     <ClInclude Include="Quaternion.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Fourier.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Ray.h">
       <Filter>Header Files\Extended</Filter>
     </ClInclude>
@@ -135,7 +132,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Randomizer.h">
-      <Filter>Header Files\Extra</Filter>
+      <Filter>Header Files\etc</Filter>
     </ClInclude>
     <ClInclude Include="DebugUtlities.h">
       <Filter>Header Files</Filter>
@@ -148,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="Meet.h">
       <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Fourier.h">
+      <Filter>Header Files\etc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
