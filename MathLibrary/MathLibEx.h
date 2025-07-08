@@ -1,0 +1,18 @@
+#pragma once
+/// MathEx includes
+#include "PMath.h"
+#include "Quadratic.h"
+#include "RMath.h"
+#include "DualQuat.h"
+#include "Flector.h"
+#include "GeometricProduct.h"
+#include "DualQuat.h"
+#include "DQMath.h"
+#include "Dual.h"
+#include "Meet.h"
+#include "Join.h"
+#include "Dot.h"
+#include "Point2d.h"
+#include "Triangle.h"
+#include "TMath.h"
+#include "QuadMath.h"	
