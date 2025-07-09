@@ -6,7 +6,6 @@
 #include "DualQuat.h"
 #include "Flector.h"
 #include "GeometricProduct.h"
-#include "DualQuat.h"
 #include "DQMath.h"
 #include "Dual.h"
 #include "Meet.h"
