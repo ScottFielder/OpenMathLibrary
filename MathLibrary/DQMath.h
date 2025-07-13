@@ -1,6 +1,6 @@
 #ifndef DQMATH_H
 #define DQMATH_H
-#include <Vector.h>
+#include "Vector.h"
 #include "QMath.h"
 #include "MMath.h"
 #include "DualQuat.h"

@@ -1,6 +1,6 @@
 #ifndef DOT_H
 #define DOT_H
-#include <VMath.h>
+#include "VMath.h"
 #include "GeometricProduct.h"
 namespace MATHEX {
 

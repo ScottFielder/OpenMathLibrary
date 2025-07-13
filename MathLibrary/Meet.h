@@ -1,6 +1,6 @@
 #ifndef MEET_H
 #define MEET_H
-#include <Vector.h>
+#include "Vector.h"
 #include "DualQuat.h"
 #include "Plane.h"
 namespace MATHEX {

@@ -1,6 +1,6 @@
 #ifndef DUAL_H
 #define DUAL_H
-#include <Vector.h>
+#include "Vector.h"
 #include "DualQuat.h"
 #include "Plane.h"
 namespace MATHEX {

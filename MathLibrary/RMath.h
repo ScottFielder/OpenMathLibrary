@@ -1,6 +1,6 @@
 #ifndef RMATH_H
 #define RMATH_H
-#include <VMath.h>
+#include "Math.h"
 #include "Sphere.h"
 #include "Ray.h"
 #include "Plane.h"

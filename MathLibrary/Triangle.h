@@ -1,6 +1,6 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
-#include <VMath.h>
+#include "VMath.h"
 #include "Plane.h"
 #include "DQMath.h"
 #include "Join.h"
