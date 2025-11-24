@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 	multiplyMatrixTest();
 
 	dqTranslateAlongLineTest();       // GREEN for GOOD!
-	lookAtTest();                   // GREEN for GOOD!
+	lookAtTest();                     // GREEN for GOOD!
 	dqGetRotationTranslationTest();   // GREEN for GOOD!
 	dualQuatMatrixTest();             // GREEN for GOOD!
 	dqConstructorTest();              // GREEN for GOOD!
