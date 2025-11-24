@@ -63,6 +63,25 @@ bool compare(float  f1, float f2, float epsilon) {
 	}
 	return true;
 }
+
+bool compare(const Vec3& v1, const Vec3& v2, float epsilon) {
+	for (int i = 0; i < 3; ++i) {
+		if (std::fabs(v1[i] - v2[i]) > epsilon) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool compare(const Vec4& v1, const Vec4& v2, float epsilon) {
+	for (int i = 0; i < 4; ++i) {
+		if (std::fabs(v1[i] - v2[i]) > epsilon) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool compare(const Vec3& v1, const glm::vec3& v2, float epsilon) {
 	for (int i = 0; i < 3; ++i) {
 		if (std::fabs(v1[i] - v2[i]) > epsilon) {

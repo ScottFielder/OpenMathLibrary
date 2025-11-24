@@ -14,6 +14,7 @@ using namespace glm;
 using namespace std;
 
 int main(int argc, char* argv[]) {
+	quaternionTest();
 	inverseTestMat4();
 	lookAtTest();
 	determinantTest();
@@ -158,89 +159,106 @@ void hashTest(){
 }
 
 void quaternionTest() {
-	//Quaternion qLookat = QMath::lookAt(Vec3(1.0f, 0.0f, 1.0f),Vec3(0.0f, 1.0f, 0.0));
-	//qLookat.print();
-	//
-	//glm::quat glmlookat = glm::quatLookAt(normalize(vec3(1.0f, 0.0f, 1.0)), vec3(0.0f, 1.0f, 0.0));
-	//glmPrintQ(glmlookat,"glm lookat");
+	const string name = " quaternionTest";
+	const float epsilon = VERY_SMALL * 10;
+ 
+	Quaternion qLookat = QMath::lookAt(Vec3(1.0f, 0.0f, 1.0f),Vec3(0.0f, 1.0f, 0.0));
+	glm::quat glmlookat = glm::quatLookAt(normalize(vec3(1.0f, 0.0f, 1.0)), vec3(0.0f, 1.0f, 0.0));
 
+	bool test0 = false;
+	// UN Our compare function might break if we reorder the member variables in Quaternion.h
+	// I'll just manually compare here
+	if(fabs(    qLookat.w - glmlookat.w) < epsilon &&
+	   fabs(qLookat.ijk.x - glmlookat.x) < epsilon &&
+	   fabs(qLookat.ijk.y - glmlookat.y) < epsilon &&
+	   fabs(qLookat.ijk.z - glmlookat.z) < epsilon)
+	{
+		test0 = true;
+	}
 
-	//Matrix3 rm = Matrix3 (MMath::rotate(-270.0f, Vec3(1.0f, 0.0f, 0.0f)));
-	//rm.print("My rotation matrix");
-	//Quaternion qm = QMath::toQuaternion(rm);
-	//qm.print("Quaternion rotate");
-	//Matrix4 meMat = MMath::toMatrix4(qm);
-	//meMat.print("My matrix from Q");
+	Matrix3 rm = Matrix3 (MMath::rotate(-270.0f, Vec3(1.0f, 0.0f, 0.0f)));
+	Quaternion qm = QMath::toQuaternion(rm);
+	Matrix4 meMat = MMath::toMatrix4(qm);
 
-	//mat3 glmrot = mat3(rotate(glm::radians(-270.0f), vec3(1.0f,0.0f,0.0f)));
-	//glmPrintM4(glmrot, "GLM rot");
-	//glm::quat glmqm= glm::quat_cast(glmrot);
-	//glmPrintQ(glmqm,"glm matrix from Q");
+	bool test1 = compare(rm, meMat, epsilon);
+	
+	Vec3 axis(1, 2, -4);
+	axis = VMath::normalize(axis);
+	float angleDeg = 37.0f;
+	Quaternion q3 = QMath::angleAxisRotation(angleDeg, axis);
+	glm::quat myQuaternion = glm::angleAxis(glm::radians(angleDeg), glm::vec3(axis.x, axis.y, axis.z));
 
-	//glm::mat4 glmRot = glm::toMat4(glmqm);
-	//glmPrintM4(glmRot,"glm rotation Matrix from Q");
-	//
+	bool test2 = false;
+	// UN Our compare function might break if we reorder the member variables in Quaternion.h
+	// I'll just manually compare here again
+	if (fabs(q3.w     - myQuaternion.w) < epsilon &&
+		fabs(q3.ijk.x - myQuaternion.x) < epsilon &&
+		fabs(q3.ijk.y - myQuaternion.y) < epsilon &&
+		fabs(q3.ijk.z - myQuaternion.z) < epsilon)
+	{
+		test2 = true;
+	}
 
-	//Quaternion q3 = QMath::angleAxisRotation(-90.0,Vec3(1.0f,0.0f,0.0f));
-	//q3.print("my Quat");
-	//glm::quat myQuaternion = glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	//glmPrintQ(myQuaternion, "glm Quat");
-
-
-	//
 	/// Lets say I have a unit vector along the x-axis 1,0,0. 
 	///*Rotate 45.0 degree around the z-axis
 	/// The resulting vector should be 0.70711, 0.70711, 0.0 
 	/// Let's test this in every way I can think of
 	Vec3 v(1.0, 0.0, 0.0);
-	Quaternion q = QMath::angleAxisRotation(90.0,Vec3(0.0,1.0,0.0));
+	Vec3 vRotated = MMath::rotate(45.0, Vec3(0.0, 0.0, 1.0)) * v;
+	Quaternion q = QMath::angleAxisRotation(45.0,Vec3(0.0,0.0,1.0));
 	Vec3 v2 = q * v * ~q;
-	v2.print("rotate");
-	/*Euler e2 = EMath::toEuler(q);
-	e2.print("from Q");*/
 
-	//q.print("The rotation Quaternion");
-	//Euler e(0.0, 0.0, 45.0);
+	bool test3 = compare(v2, vRotated, epsilon);
 
-	//Quaternion qe = QMath::toQuaternion(e);
-	//
-	//qe.print("from Euler");
-	//Vec3 v2 = qe * v * ~qe;
-	//v2.print("The slow way");
+	Euler e(0.0, 0.0, 45.0);
+	Quaternion qe = QMath::toQuaternion(e);
+	Vec3 v3 = qe * v * ~qe;
+	bool test4 = compare(v3, vRotated, epsilon);
 
+	Matrix3 m3 = MMath::toMatrix3(qe);
+	Vec3 v4 = m3 * v;
+	bool test5 = compare(v4, vRotated, epsilon);
 
+	Matrix4 m4 = MMath::toMatrix4(qe);
+	Vec3 v5 = m4 * v;
+	bool test6 = compare(v5, vRotated, epsilon);
 
-	//Vec3 v3 = QMath::rotate(v, qe);
-	//v3.print("faster way");
+	// Testing the pow function to get a half-angle rotation
+	Quaternion q4 = QMath::angleAxisRotation(90.0, Vec3(0.0, 0.0, 1.0));
+	q4 = QMath::pow(q4, 0.5);
+	Vec3 v6 = QMath::rotate(v, q4);
+	bool test7 = compare(v6, vRotated, epsilon);
 
-	//Matrix3 m3 = MMath::toMatrix3(qe);
-	//Vec3 v4 = m3 * v;
-	//v4.print("Mat3");
+	// Testing the magnitude function
+	float qMag = QMath::magnitude(q);
+	bool test8 = compare(qMag, 1.0f, epsilon);
 
-	//Matrix4 m4 = MMath::toMatrix4(qe);
-	//Vec3 v5 = m4 * v;
-	//v5.print("Mat4");
+	// Testing the conjugate function
+	Quaternion q_negativeAngle = QMath::angleAxisRotation(-45.0, Vec3(0.0, 0.0, 1.0));
+	Quaternion conj_q = QMath::conjugate(q_negativeAngle);
+	Vec3 v7 = QMath::rotate(v, conj_q);
+	bool test9 = compare(v7, vRotated, epsilon);
 
-	//Quaternion q2 = QMath::angleAxisRotation(90.0, Vec3(0.0, 0.0, 1.0));
-	//q2 = QMath::pow(q2, 0.5);
-	//Vec3 v6 = QMath::rotate(v, q2);
-	//v6.print("Using the pow function");
+	// Testing the inverse function
+	// WIth a really weird quaternion
+	Quaternion qTest = Quaternion(1, Vec3(2, -3, 4));
+	Quaternion inv_q = QMath::inverse(qTest);
+	Quaternion qIdentity = qTest * inv_q;
+	bool test10 = false;
+	if (fabs(qIdentity.w - 1.0f) < epsilon &&
+		fabs(qIdentity.ijk.x) < epsilon &&
+		fabs(qIdentity.ijk.y) < epsilon &&
+		fabs(qIdentity.ijk.z) < epsilon)
+	{
+		test10 = true;
+	}
 
-	//printf("Magnitude of q \n%f\n", QMath::magnitude(q));
-	//Quaternion conj_q = QMath::conjugate(q);
-	//conj_q.print("conjugate of q");
-
-	//Quaternion inv_q = QMath::inverse(q);
-	//inv_q.print("inv of q");
-
-	//Quaternion q4 = q * inv_q;
-	//q4.print("q * q-1 is the identity");
-
-	Quaternion q1(0.0, Vec3(0.0,1.0,0.0));
-	Quaternion q2(0.0, Vec3(0.0, 0.0, 1.0));
-	Quaternion q3 = q1 * q2;
-	q3.print();
-
+	if( test0 && test1 && test2 && test3 && test4 && test5 && test6 && test7 && test8 && test9 && test10) {
+		printPassedOrFailed(true, name);
+	}
+	else {
+		printPassedOrFailed(false, name);
+	}
 }
 
 
@@ -681,7 +699,6 @@ void dualQuatMatrixTest() {
 		test0 = true;
 	}
 
-	// What if we inverse them?
 	Matrix4  transform_mat_inversed = MMath::inverse(transform_mat);
 	DualQuat transform_dq_inversed = DQMath::inverse(transform_dq);
 	Matrix4  transform_dq_to_mat_inversed = MMath::toMatrix4(transform_dq_inversed);

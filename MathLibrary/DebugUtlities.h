@@ -29,6 +29,8 @@ void glmPrintV4(glm::vec4 v, const char* comment = nullptr);
 /// Utility Compare() calls for testing 
 bool compare(float f1, float f2, float epsilon);
 
+bool compare(const Vec3& v1, const Vec3& v2, float epsilon);
+bool compare(const Vec4& v1, const Vec4& v2, float epsilon);
 bool compare(const Vec3& v1, const glm::vec3& v2, float epsilon);
 bool compare(const Vec4& v1, const glm::vec4& v2, float epsilon);
 
