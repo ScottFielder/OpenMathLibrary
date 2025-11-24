@@ -2,7 +2,6 @@
 #define DQMATH_H
 #include "Vector.h"
 #include "QMath.h"
-#include "MMath.h"
 #include "DualQuat.h"
 #include "GeometricProduct.h"
 #include "Meet.h"

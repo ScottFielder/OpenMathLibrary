@@ -14,7 +14,7 @@ using namespace glm;
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	quaternionTest();
+	quaternionTest();				// GREEN for GOOD!
 	inverseTestMat4();
 	lookAtTest();
 	determinantTest();
@@ -165,23 +165,9 @@ void quaternionTest() {
 	Quaternion qLookat = QMath::lookAt(Vec3(1.0f, 0.0f, 1.0f),Vec3(0.0f, 1.0f, 0.0));
 	glm::quat glmlookat = glm::quatLookAt(normalize(vec3(1.0f, 0.0f, 1.0)), vec3(0.0f, 1.0f, 0.0));
 
-	bool test0 = false;
-	// UN Our compare function might break if we reorder the member variables in Quaternion.h
-	// I'll just manually compare here
-	/*if( compare(qLookat, glmlookat, epsilon)) {
-		test0 = true;
-	}*/
-	/*if(fabs(qLookat.w - glmlookat.w) < epsilon &&
-	   fabs(qLookat.ijk.x - glmlookat.x) < epsilon &&
-	   fabs(qLookat.ijk.y - glmlookat.y) < epsilon &&
-	   fabs(qLookat.ijk.z - glmlookat.z) < epsilon)
-	{
-		test0 = true;
-	}*/
-
-	if( compare(qLookat, glmlookat, epsilon)) {
-		test0 = true;
-	}
+	
+	bool test0 = compare(qLookat, glmlookat, epsilon);
+		
 
 	Matrix3 rm = Matrix3 (MMath::rotate(-270.0f, Vec3(1.0f, 0.0f, 0.0f)));
 	Quaternion qm = QMath::toQuaternion(rm);
@@ -193,18 +179,11 @@ void quaternionTest() {
 	axis = VMath::normalize(axis);
 	float angleDeg = 37.0f;
 	Quaternion q3 = QMath::angleAxisRotation(angleDeg, axis);
-	glm::quat myQuaternion = glm::angleAxis(glm::radians(angleDeg), glm::vec3(axis.x, axis.y, axis.z));
+	glm::quat glmq3 = glm::angleAxis(glm::radians(angleDeg), glm::vec3(axis.x, axis.y, axis.z));
 
-	bool test2 = false;
-	// UN Our compare function might break if we reorder the member variables in Quaternion.h
-	// I'll just manually compare here again
-	if (fabs(q3.w     - myQuaternion.w) < epsilon &&
-		fabs(q3.ijk.x - myQuaternion.x) < epsilon &&
-		fabs(q3.ijk.y - myQuaternion.y) < epsilon &&
-		fabs(q3.ijk.z - myQuaternion.z) < epsilon)
-	{
-		test2 = true;
-	}
+
+	bool test2 = compare(q3, glmq3, epsilon);
+
 
 	/// Lets say I have a unit vector along the x-axis 1,0,0. 
 	///*Rotate 45.0 degree around the z-axis
@@ -247,7 +226,7 @@ void quaternionTest() {
 	bool test9 = compare(v7, vRotated, epsilon);
 
 	// Testing the inverse function
-	// WIth a really weird quaternion
+	// With a really weird quaternion
 	Quaternion qTest = Quaternion(1, Vec3(2, -3, 4));
 	Quaternion inv_q = QMath::inverse(qTest);
 	Quaternion qIdentity = qTest * inv_q;

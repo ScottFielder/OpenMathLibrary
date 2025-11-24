@@ -64,8 +64,6 @@ namespace  MATHEX {
 		}
 
 
-
-
 		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("v0: %1.8f %1.8f %1.8f\nv1: %1.8f %1.8f %1.8f\nv2: %1.8f %1.8f %1.8f\n",
