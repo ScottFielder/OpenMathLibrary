@@ -12,23 +12,23 @@ namespace  MATH {
 union Quaternion {
 public:
 	struct {
-		float w;
 		float i;
 		float j;
 		float k;
-	};
-
-	struct {
 		float w;
+	};
+
+	struct {
 		Vec3 ijk; /// These are the ijk components of the Quaternion 
+		float w;
 	};
 
 
 	struct {
-		float real;
 		float e32;  // i is -e23 
 		float e13;  // j is -e31
 		float e21;  // k is -e12
+		float real;
 	};
 
 	
@@ -113,7 +113,7 @@ public:
 
 	inline void print(const char* comment = nullptr) const {
 		if (comment) printf("%s\n", comment);
-		printf("%1.4f %1.4f %1.4f %1.4f\n", w, ijk.x, ijk.y, ijk.z);
+		printf("%1.4f %1.4f %1.4f %1.4f\n", ijk.x, ijk.y, ijk.z, w);
 	}
 
 

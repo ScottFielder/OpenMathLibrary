@@ -153,7 +153,7 @@ bool compare(const Quaternion& q1, const Quaternion& q2, float epsilon) {
 	return true;
 }
 
-bool compare(const Quaternion& q1, glm::quat& q2, float epsilon) {
+bool compare(const Quaternion& q1, const glm::quat& q2, float epsilon) {
 	for (int i = 0; i < 4; ++i) {
 		if (std::fabs(q1[i] - q2[i]) > epsilon) {
 			return false;

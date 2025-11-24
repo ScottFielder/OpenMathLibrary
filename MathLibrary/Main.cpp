@@ -151,7 +151,7 @@ void hashTest(){
 	bool test2 = (count == glmCount);
 
 	if (test0 && test1 && test2 ) {
-		printPassedOrFailed(true, name);
+		printPassedOrFailed(true, name); 
 	}
 	else {
 		printPassedOrFailed(false, name);
@@ -168,11 +168,18 @@ void quaternionTest() {
 	bool test0 = false;
 	// UN Our compare function might break if we reorder the member variables in Quaternion.h
 	// I'll just manually compare here
-	if(fabs(    qLookat.w - glmlookat.w) < epsilon &&
+	/*if( compare(qLookat, glmlookat, epsilon)) {
+		test0 = true;
+	}*/
+	/*if(fabs(qLookat.w - glmlookat.w) < epsilon &&
 	   fabs(qLookat.ijk.x - glmlookat.x) < epsilon &&
 	   fabs(qLookat.ijk.y - glmlookat.y) < epsilon &&
 	   fabs(qLookat.ijk.z - glmlookat.z) < epsilon)
 	{
+		test0 = true;
+	}*/
+
+	if( compare(qLookat, glmlookat, epsilon)) {
 		test0 = true;
 	}
 
