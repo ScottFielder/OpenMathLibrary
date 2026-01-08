@@ -98,14 +98,14 @@ namespace  MATH {
 			m = m3 * m2 * m1;
 
 			///This might be slightly faster way but who cares we do it rarely 
-			/***
+			/*Matrix4 m;
 			m[0] = float(width_)/2.0f;
 			m[5] = -float(height_)/2.0f;
 			m[10] = maxZ - minZ;
 			m[12] = float(width_)/2.0f;
 			m[13] = float(height_)/2.0f;
 			m[14] = minZ;
-			m[15] = 1.0f; ***/
+			m[15] = 1.0f; */
 
 			return m;
 		}

@@ -13,7 +13,10 @@ using namespace MATHEX;
 using namespace glm;
 using namespace std;
 
+void NDCTest();
 int main(int argc, char* argv[]) {
+	NDCTest();
+
 	quaternionTest();				// GREEN for GOOD!
 	inverseTestMat4();
 	lookAtTest();
@@ -54,6 +57,16 @@ int main(int argc, char* argv[]) {
 	//sphereTest();					  // Just a timing test
 }
 
+void NDCTest(){
+	Vec4 center(0.0f,0.0f,0.0f,1.0f);
+	Matrix4 NDCtoScreen = MMath::viewportNDC(1024, 768);
+	Matrix4 proj = MMath::perspective(45.0f, 1024.0f/768.0f,0.5,100.0);
+	Matrix4 view = MMath::lookAt(Vec3(0.0f, 0.0f, 5.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	Matrix4 model = MMath::translate(Vec3(0.0f, 0.0f, -99.0f)) * MMath::rotate(0.0f, 1.0f, 0.0f, 0.0f) * MMath::scale(1.0f, 1.0f, 1.0f);
+	Vec4 answer = NDCtoScreen * proj * view * model * center;
+	answer /= answer.w;
+   	answer.print("in NDC");
+}
 
 void slerpTest() {
 	Euler e1(90.0f, 0.0f, 0.0f);
