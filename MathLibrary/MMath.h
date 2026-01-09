@@ -88,25 +88,36 @@ namespace  MATH {
 		///	   |/ (-1.0,-1.0)               |/                ----------------> +X
 		///	   ------------------------------
 		static Matrix4 viewportNDC(int width_, int height_) {
-			float minZ = -1.0f;
-			float maxZ = 1.0f;
+			float near = 0.0f;
+			float far = 1.0f;
 
 			Matrix4 m;
 			Matrix4 m1 = scale(1.0f, -1.0f, 1.0f);
-			Matrix4 m2 = scale(float(width_) / 2.0f, float(height_) / 2.0f, maxZ - minZ);
-			Matrix4 m3 = translate(float(width_) / 2.0f, float(height_) / 2.0f, minZ);
+			Matrix4 m2 = scale(float(width_) / 2.0f, float(height_) / 2.0f, far - near);
+			Matrix4 m3 = translate(float(width_) / 2.0f, float(height_) / 2.0f, near);
 			m = m3 * m2 * m1;
+			m.print("theory me");
+			
+			m.loadIdentity();
+			m[0] = float(width_) / 2.0f;
+			m[5] = -float(height_) / 2.0f;
+			m[10] = far - near;
+			m[12] = float(width_) / 2.0f;
+			m[13] = float(height_) / 2.0f;
+			m[14] = near;
+			m[15] = 1.0f;
+			m.print(" me");
 
-			///This might be slightly faster way but who cares we do it rarely 
-			/*Matrix4 m;
-			m[0] = float(width_)/2.0f;
-			m[5] = -float(height_)/2.0f;
-			m[10] = maxZ - minZ;
-			m[12] = float(width_)/2.0f;
-			m[13] = float(height_)/2.0f;
-			m[14] = minZ;
-			m[15] = 1.0f; */
 
+			m.loadIdentity();
+			m[0] = static_cast<float>(width_) / 2.0f;
+			m[5] = static_cast<float>(height_) / 2.0f;
+			m[10] = (far - near)/2.0f;
+			m[12] = static_cast<float>(width_) / 2.0f;
+			m[13] = static_cast<float>(height_) / 2.0f;
+			m[14] = (far + near) / 2.0f;
+			m[15] = 1.0f;
+			m.print("Songho");
 			return m;
 		}
 
