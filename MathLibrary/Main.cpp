@@ -60,8 +60,8 @@ int main(int argc, char* argv[]) {
 void NDCTest(){
 	Vec4 result;
 	Vec4 vert(0.0f,0.0f,0.0f,1.0f);  /// Paul Neil space - origin 
-	Matrix4 model = MMath::translate(Vec3(0.0f, 0.0f, 0.0f));
-	Matrix4 view = MMath::translate(0.0f, 0.0f, -5.0f);/// just fake the view ///MMath::lookAt(Vec3(0.0f, 0.0f, 5.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	Matrix4 model = MMath::translate(Vec3(0.0f, 0.0f, 0.0f));/// Don't move the 
+	Matrix4 view = MMath::translate(0.0f, 0.0f, -5.0f);/// just fake the view, push the universe back -5.0
 	Matrix4 proj = MMath::perspective(45.0f, 1024.0f/768.0f,0.5f,100.0f);
 	Matrix4 NDCtoScreen = MMath::viewportNDC(1024, 768);
 
