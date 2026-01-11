@@ -84,7 +84,8 @@ void NDCtoViewportTest(){
 	model = MMath::translate(Vec3(0.0f, 0.0f, -45.25f));/// in the middle 
 	result = proj * view * model * vert;
 	result /= result.w;
-	result = NDCtoScreen * result; /// should be 0.5
+	// UN - Edit. Middle of the NDC box has z = 0
+	result = NDCtoScreen * Vec3(0 ,0, 0); /// should be 0.5
 	test3 = compare(result.z, 0.5f, epsilon);
 
 
