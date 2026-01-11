@@ -13,9 +13,9 @@ using namespace MATHEX;
 using namespace glm;
 using namespace std;
 
-void NDCTest();
+
 int main(int argc, char* argv[]) {
-	NDCTest();
+	NDCtoViewportTest();
 
 	quaternionTest();				// GREEN for GOOD!
 	inverseTestMat4();
@@ -57,22 +57,42 @@ int main(int argc, char* argv[]) {
 	//sphereTest();					  // Just a timing test
 }
 
-void NDCTest(){
+void NDCtoViewportTest(){
 	Vec4 result;
+	const float epsilon = VERY_SMALL;
+	bool test1, test2, test3; 
+	const char* name = " NDCtoViewportTest";
 	Vec4 vert(0.0f,0.0f,0.0f,1.0f);  /// Paul Neil space - origin 
-	Matrix4 model = MMath::translate(Vec3(0.0f, 0.0f, 0.0f));/// Don't move the 
-	Matrix4 view = MMath::translate(0.0f, 0.0f, -5.0f);/// just fake the view, push the universe back -5.0
+	Matrix4 view = MMath::lookAt(Vec3(0.0f, 0.0f, 5.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 	Matrix4 proj = MMath::perspective(45.0f, 1024.0f/768.0f,0.5f,100.0f);
-	Matrix4 NDCtoScreen = MMath::viewportNDC(1024, 768);
+	Matrix4 NDCtoScreen = MMath::NDCtoViewport(1024, 768);
 
-
-	result = model * vert;
-	result = view * result;
-	result = proj * result;
-
+	Matrix4 model = MMath::translate(Vec3(0.0f, 0.0f, 4.5f));/// front clipping plane 
+	result = proj * view * model * vert;
 	result /= result.w;
 	result = NDCtoScreen * result;
-	result.print("in Screen");
+	test1 = compare(result.z, 0.0f, epsilon); /// should be zero
+
+
+	model = MMath::translate(Vec3(0.0f, 0.0f, -95.0f));/// back clipping plane 
+	result = proj * view * model * vert;
+	result /= result.w;
+	result = NDCtoScreen * result;
+	test2 = compare(result.z, 1.0f, epsilon); /// should be one 
+
+	/// Something is wrong here
+	model = MMath::translate(Vec3(0.0f, 0.0f, -45.25f));/// in the middle 
+	result = proj * view * model * vert;
+	result /= result.w;
+	result = NDCtoScreen * result; /// should be 0.5
+	test3 = compare(result.z, 0.5f, epsilon);
+
+
+	if(test1 && test2 && test3){
+		printPassedOrFailed(true, name);
+	}else{
+		printPassedOrFailed(false, name);
+	}
 }
 
 void slerpTest() {
@@ -322,18 +342,6 @@ void randomizerTest() {
 	myfile.close();
 }
 
-void viewportNDCTest() {
-	Matrix4 m = MMath::viewportNDC(1024, 1024);
-	m.print();
-	Vec3 pos0(0, 0, 0);
-	Vec3 result0 = m * pos0;
-	result0.print();
-
-	Vec3 pos1(-1, 1, 1);
-	Vec3 result1 = m * pos1;
-	result1.print();
-}
-
 void multiplyMatrixTest() {
 	const string name = " multiplyMatrixTest";
 	Matrix4 tmSSF = MMath::translate(10.0f, 10.0f, 10.0f);
@@ -381,7 +389,7 @@ void rotationTest(){
 void unOrthoTest() {
 	/// Just seeing if I can deconstruct the the ortho matrix
 	int w = 800, h = 600;
-	Matrix4 ndc = MMath::viewportNDC(w,h);
+	Matrix4 ndc = MMath::NDCtoViewport(w,h);
 	
 	float xMax = 10.0, xMin = -10.0, yMax = 10.0, yMin = -10.0, zMax = 1.0, zMin = -10.0;
 	Matrix4 ortho = MMath::orthographic(xMin, xMax, 

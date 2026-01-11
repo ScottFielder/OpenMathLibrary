@@ -18,7 +18,7 @@ void quaternionTest();
 void hashTest();
 void determinantTest();
 void slerpTest();
-
+void NDCtoViewportTest();
 
 /// MathEx tests 
 void lookAtTest();

@@ -87,7 +87,7 @@ namespace  MATH {
 		///	   | /                          | /               |/
 		///	   |/ (-1.0,-1.0)               |/                ----------------> +X
 		///	   ------------------------------
-		static Matrix4 viewportNDC(int width_, int height_) {
+		static Matrix4 NDCtoViewport(int width_, int height_) {
 			float near = 0.0f;
 			float far = 1.0f;
 
@@ -98,17 +98,6 @@ namespace  MATH {
 			Matrix4 m2 = scale(float(width_) / 2.0f, float(height_) / 2.0f, (far - near) / 2.0f);
 			Matrix4 m3 = translate(float(width_) / 2.0f, float(height_) / 2.0f, (far + near) / 2.0f);
 			m = m3 * m2 * m1;
-			m.print("Umer");
-
-			/*m.loadIdentity();
-			m[0] = static_cast<float>(width_) / 2.0f;
-			m[5] = static_cast<float>(height_) / 2.0f;
-			m[10] = (far - near)/2.0f;
-			m[12] = static_cast<float>(width_) / 2.0f;
-			m[13] = static_cast<float>(height_) / 2.0f;
-			m[14] = (far + near) / 2.0f;
-			m[15] = 1.0f;
-			m.print("Songho");*/
 			return m;
 		}
 
@@ -216,46 +205,10 @@ namespace  MATH {
 
 				Matrix4 T = translate(-eye);
 
-				// Book says we can think of the lookAt matrix as
-				// first moving the eye to the origin
-				// then aligning u, v, w with x, y, z
 				return  R * T;
 			}
 
-		    /// Scott's old version 
-			/*Vec3 at(atX, atY, atZ);
-			Vec3 up(upX, upY, upZ);
-			Vec3 eye(eyeX, eyeY, eyeZ);
-
-			Matrix4 result;
-
-			Vec3 forward = VMath::normalize(at - eye);
-			up = VMath::normalize(up);
-			Vec3 side = VMath::normalize(VMath::cross(forward, up));
-			up = VMath::cross(side, forward);
-
-			result[0] = side.x;
-			result[1] = side.y;
-			result[2] = side.z;
-			result[3] = 0.0;
-
-			result[4] = up.x;
-			result[5] = up.y;
-			result[6] = up.z;
-			result[7] = 0.0;
-
-			result[8] = -forward.x;
-			result[9] = -forward.y;
-			result[10] = -forward.z;
-			result[11] = 0.0;
-
-			result[12] = -VMath::dot(side, eye);
-			result[13] = -VMath::dot(up, eye);
-			result[14] = VMath::dot(forward, eye);
-			result[15] = 1.0;
-
-			return result;
-		}*/
+		    
 
 		static Matrix4 lookAt(const Vec3& eye, const Vec3& at, const Vec3& up) {
 			return lookAt(eye.x, eye.y, eye.z, at.x, at.y, at.z, up.x, up.y, up.z);
