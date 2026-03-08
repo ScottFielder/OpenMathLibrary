@@ -11,8 +11,6 @@ void unOrthoTest();
 void rotationTest();
 void vec3MultiplyMat4Test();
 void multiplyMatrixTest();
-void viewportNDCTest();
-
 void rotationIsOrthogonal();
 void quaternionTest();
 void hashTest();
@@ -48,3 +46,4 @@ void quadAreaTest();
 void pointInsideQuadTest();
 void triangleTest();
 void rayTest();
+void lineSphereTest();

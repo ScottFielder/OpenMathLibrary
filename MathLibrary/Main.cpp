@@ -41,6 +41,8 @@ int main(int argc, char* argv[]) {
 	raySphereTest();			      // GREEN for GOOD!
 	rotateTest();				      // GREEN for GOOD!
 	translateTest();				  // GREEN for GOOD!
+	lineSphereTest();                 // GREEN for GOOD!
+
 	quadraticTest();
 	rayTest();
 	//flectorTest();
@@ -588,6 +590,44 @@ void FFT_Test(){
 	fclose(fp);
 
 
+}
+
+void lineSphereTest() {
+	const string name = " lineSphereTest";
+	float epsilon = VERY_SMALL;
+	float sphereRadius = 1.0f;
+	Vec3 sphereCentre = Vec3(4, 1, 0);
+	// Line joining points A and B
+	Vec4 A = Vec4(0, 1, 0, 1);
+	Vec4 B = Vec4(1, 1, 0, 1);
+	DualQuat line = A & B;
+
+	// Pass in potential intersection points by reference
+	Vec3 intersection1;
+	Vec3 intersection2;
+	bool hasIntersected = DQMath::lineSphereIntersection(line, sphereCentre, sphereRadius, intersection1, intersection2);
+
+	// If my scribbles are correct, the answer should be
+	Vec3 correctAnswer1 = Vec3(3, 1, 0);
+	Vec3 correctAnswer2 = Vec3(5, 1, 0);
+
+	bool test0 = hasIntersected;
+	bool test1 = false;
+	float diffMag1, diffMag2;
+	diffMag1 = VMath::mag(correctAnswer1 - intersection1);
+	diffMag2 = VMath::mag(correctAnswer1 - intersection2);
+	if (diffMag1 < epsilon || diffMag2 < epsilon) {
+		test1 = true;
+	}
+	bool test2 = false;
+	diffMag1 = VMath::mag(correctAnswer2 - intersection1);
+	diffMag2 = VMath::mag(correctAnswer2 - intersection2);
+	if (diffMag1 < epsilon || diffMag2 < epsilon) {
+		test2 = true;
+	}
+
+	bool flag = test0 && test1 && test2;
+	printPassedOrFailed(flag, name);
 }
 
 void dqGetRotationTranslationTest() {
