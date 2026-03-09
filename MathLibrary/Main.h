@@ -47,3 +47,4 @@ void pointInsideQuadTest();
 void triangleTest();
 void rayTest();
 void lineSphereTest();
+void lineCylinderTest();
