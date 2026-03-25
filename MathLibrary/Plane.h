@@ -13,12 +13,6 @@ namespace  MATHEX {
 			float e1, e2, e3, e0;
 		};
 
-		struct {
-			MATH::Vec3 n;
-			float negativeDist;  /// if y = 2, then negativeDist = -2
-		};
-
-
 		/// Just a little utility to populate a Plane
 		inline void set(float x_, float y_, float z_, float d_) {
 			x = x_, y = y_, z = z_, d = d_;

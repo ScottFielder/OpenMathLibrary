@@ -12,11 +12,11 @@ namespace MATH{
 	public:
 
 		static float magnitude(const Quaternion& q) {
-			return(sqrt((q.w * q.w) + (q.ijk.x * q.ijk.x) + (q.ijk.y * q.ijk.y) + (q.ijk.z * q.ijk.z)));
+			return(sqrt((q.w * q.w) + (q.i * q.i) + (q.j * q.j) + (q.k * q.k)));
 		}
 
 		static Quaternion conjugate(const Quaternion& q) {
-			return Quaternion(q.w, -q.ijk);
+			return Quaternion(q.w, Vec3(-q.i, -q.j, -q.k));
 		}
 
 		static Quaternion inverse(const Quaternion& q) {
@@ -31,7 +31,7 @@ namespace MATH{
 
 			float alpha = acos(q.w);
 			float newAlpha = alpha * exponent;
-			return Quaternion(cos(newAlpha), q.ijk * sin(newAlpha) / sin(alpha));
+			return Quaternion(cos(newAlpha), Vec3(q.i, q.j, q.k) * sin(newAlpha) / sin(alpha));
 		}
 
 		/// 2022-02-12 A  Dr. Umer Noor edit. Putting in a normalize method
@@ -41,7 +41,7 @@ namespace MATH{
 
 		/// 2022-04-04 A quaternion dot product
 		static float dot(const Quaternion &a, const Quaternion &b){
-			return((a.w * b.w) + (a.ijk.x * b.ijk.x) + (a.ijk.y * b.ijk.y) + (a.ijk.z * b.ijk.z));
+			return((a.w * b.w) + (a.i * b.i) + (a.j * b.j) + (a.k * b.k));
 		}
 
 		static Quaternion lookAt(const Vec3& direction, const Vec3& up) {
@@ -114,7 +114,7 @@ namespace MATH{
 			Quaternion p(0.0, v); /// convert the incoming vector to a Quaternion
 			Quaternion qInv = QMath::inverse(q); /// Get the inverse - duh.
 			Quaternion result = q * p * qInv;
-			return Vec3(result.ijk);
+			return Vec3(result.i, result.j, result.k);
 
 			/*** I got the idea to do it this way from glm. They say it is faster. 
 			Vec3 quatVector(q.v);
@@ -152,9 +152,9 @@ namespace MATH{
 				c1 = sin((1.0f - t) * theta) / sinTheta;
 				c2 = sin(t * theta) / sinTheta;
 			}
-			Vec3 ijk(c1 * q1.ijk.x + c2 * q2.ijk.x,
-					c1 * q1.ijk.y + c2 * q2.ijk.y,
-					c1 * q1.ijk.z + c2 * q2.ijk.z);
+			Vec3 ijk(c1 * q1.i + c2 * q2.i,
+					c1 * q1.j + c2 * q2.j,
+					c1 * q1.k + c2 * q2.k);
 			return Quaternion(c1 * q1.w + c2 * q2.w, ijk);
 		
 		}

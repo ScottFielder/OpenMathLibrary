@@ -339,31 +339,31 @@ namespace  MATH {
 
 		static Matrix4 toMatrix4(const Quaternion& q) {
 			/// This is the fastest way I know...
-			return Matrix4((1.0f - 2.0f * q.ijk.y * q.ijk.y - 2.0f * q.ijk.z * q.ijk.z), (2.0f * q.ijk.x * q.ijk.y + 2.0f * q.ijk.z * q.w), (2.0f * q.ijk.x * q.ijk.z - 2.0f * q.ijk.y * q.w), 0.0f,
-				(2.0f * q.ijk.x * q.ijk.y - 2.0f * q.ijk.z * q.w), (1.0f - 2.0f * q.ijk.x * q.ijk.x - 2.0f * q.ijk.z * q.ijk.z), (2.0f * q.ijk.y * q.ijk.z + 2.0f * q.ijk.x * q.w), 0.0f,
-				(2.0f * q.ijk.x * q.ijk.z + 2.0f * q.ijk.y * q.w), (2.0f * q.ijk.y * q.ijk.z - 2 * q.ijk.x * q.w), (1.0f - 2.0f * q.ijk.x * q.ijk.x - 2.0f * q.ijk.y * q.ijk.y), 0.0f,
+			return Matrix4((1.0f - 2.0f * q.j * q.j - 2.0f * q.k * q.k), (2.0f * q.i * q.j + 2.0f * q.k * q.w), (2.0f * q.i * q.k - 2.0f * q.j * q.w), 0.0f,
+				(2.0f * q.i * q.j - 2.0f * q.k * q.w), (1.0f - 2.0f * q.i * q.i - 2.0f * q.k * q.k), (2.0f * q.j * q.k + 2.0f * q.i * q.w), 0.0f,
+				(2.0f * q.i * q.k + 2.0f * q.j * q.w), (2.0f * q.j * q.k - 2 * q.i * q.w), (1.0f - 2.0f * q.i * q.i - 2.0f * q.j * q.j), 0.0f,
 				0.0f, 0.0f, 0.0f, 1.0f);
 
 			/// ... but this is the coolest. My way is just a bit faster on single processor machines,
 			/// this method is faster on parallel multicore machines. Multicore can calculate m1 and m2
 			/// on separate threads. Just saying. 
 
-			//Matrix4 m1( q.w,  q.ijk.z,  -q.ijk.y,  q.ijk.x,
-			//		-q.ijk.z,   q.w,   q.ijk.x,  q.ijk.y,
-			//		q.ijk.y,  -q.ijk.x,   q.w,  q.ijk.z,
-			//		-q.ijk.x,  -q.ijk.y,  -q.ijk.z,  q.w);
+			//Matrix4 m1( q.w,  q.k,  -q.j,  q.i,
+			//		-q.k,   q.w,   q.i,  q.j,
+			//		q.j,  -q.i,   q.w,  q.k,
+			//		-q.i,  -q.j,  -q.k,  q.w);
 			//
-			//Matrix4 m2( q.w,   q.ijk.z,  -q.ijk.y,  -q.ijk.x,
-			//			-q.ijk.z,   q.w,   q.ijk.x,  -q.ijk.y,
-			//			q.ijk.y,  -q.ijk.x,   q.w,  -q.ijk.z,
-			//			-q.ijk.x,   q.ijk.y,   q.ijk.z,   q.w);
+			//Matrix4 m2( q.w,   q.k,  -q.j,  -q.i,
+			//			-q.k,   q.w,   q.i,  -q.j,
+			//			q.j,  -q.i,   q.w,  -q.k,
+			//			-q.i,   q.j,   q.k,   q.w);
 			//return m1 * m2;
 		}
 
 		static Matrix3 toMatrix3(const Quaternion& q) {
-			return Matrix3((1.0f - 2.0f * q.ijk.y * q.ijk.y - 2.0f * q.ijk.z * q.ijk.z), (2.0f * q.ijk.x * q.ijk.y + 2.0f * q.ijk.z * q.w), (2.0f * q.ijk.x * q.ijk.z - 2.0f * q.ijk.y * q.w),
-				(2.0f * q.ijk.x * q.ijk.y - 2.0f * q.ijk.z * q.w), (1.0f - 2.0f * q.ijk.x * q.ijk.x - 2.0f * q.ijk.z * q.ijk.z), (2.0f * q.ijk.y * q.ijk.z + 2.0f * q.ijk.x * q.w),
-				(2.0f * q.ijk.x * q.ijk.z + 2.0f * q.ijk.y * q.w), (2.0f * q.ijk.y * q.ijk.z - 2 * q.ijk.x * q.w), (1.0f - 2.0f * q.ijk.x * q.ijk.x - 2.0f * q.ijk.y * q.ijk.y));
+			return Matrix3((1.0f - 2.0f * q.j * q.j - 2.0f * q.k * q.k), (2.0f * q.i * q.j + 2.0f * q.k * q.w), (2.0f * q.i * q.k - 2.0f * q.j * q.w),
+				(2.0f * q.i * q.j - 2.0f * q.k * q.w), (1.0f - 2.0f * q.i * q.i - 2.0f * q.k * q.k), (2.0f * q.j * q.k + 2.0f * q.i * q.w),
+				(2.0f * q.i * q.k + 2.0f * q.j * q.w), (2.0f * q.j * q.k - 2 * q.i * q.w), (1.0f - 2.0f * q.i * q.i - 2.0f * q.j * q.j));
 		}
 
 		// Convert a dual quaternion to a 4x4 matrix

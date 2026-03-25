@@ -1,3 +1,6 @@
+#ifdef _WIN32
+#pragma warning(disable : 4996) // tells Visual Studio to ignore the warning about fopen vs fopen_s
+#endif
 
 #include <iostream>
 #include <fstream>
@@ -276,9 +279,9 @@ void quaternionTest() {
 	Quaternion qIdentity = qTest * inv_q;
 	bool test10 = false;
 	if (fabs(qIdentity.w - 1.0f) < epsilon &&
-		fabs(qIdentity.ijk.x) < epsilon &&
-		fabs(qIdentity.ijk.y) < epsilon &&
-		fabs(qIdentity.ijk.z) < epsilon)
+		fabs(qIdentity.i) < epsilon &&
+		fabs(qIdentity.j) < epsilon &&
+		fabs(qIdentity.k) < epsilon)
 	{
 		test10 = true;
 	}
@@ -560,37 +563,33 @@ void FFT_Test(){
 	}
 
 	/// Write it all out in files
-	if (fopen_s(&fp, "0.orig_data.csv", "w") != 0){
+	// UN switched from fopen_s to fopen so this works on Linux
+	if ((fp = fopen("0.orig_data.csv", "w")) == nullptr) {
 		printf("Can't open file\n");
 		return;
 	}
-	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2){
+	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2) {
 		fprintf(fp, "%f, %f\n", orig_data[i], orig_data[i + 1]);
 	}
 	fclose(fp);
 
-
-
-	if (fopen_s(&fp, "1.transformed.csv", "w") != 0){
+	if ((fp = fopen("1.transformed.csv", "w")) == nullptr) {
 		printf("Can't open file\n");
 		return;
 	}
-	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2){
+	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2) {
 		fprintf(fp, "%f, %f\n", transformed[i], transformed[i + 1]);
 	}
 	fclose(fp);
 
-
-	if (fopen_s(&fp, "2.orig&reverse.csv", "w") != 0){
+	if ((fp = fopen("2.orig&reverse.csv", "w")) == nullptr) {
 		printf("Can't open file\n");
 		return;
 	}
-	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2){
+	for (int i = 0; i < 2 * SAMPLE_SIZE; i += 2) {
 		fprintf(fp, "%f, %f, %f, %f\n", orig_data[i], orig_data[i + 1], data[i], data[i + 1]);
 	}
 	fclose(fp);
-
-
 }
 
 void lineCylinderTest() {

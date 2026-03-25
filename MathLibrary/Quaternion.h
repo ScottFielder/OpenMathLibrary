@@ -19,28 +19,20 @@ public:
 	};
 
 	struct {
-		Vec3 ijk; /// These are the ijk components of the Quaternion 
-		float w;
-	};
-
-
-	struct {
 		float e32;  // i is -e23 
 		float e13;  // j is -e31
 		float e21;  // k is -e12
 		float real;
 	};
 
-	
-
 	/// Just a little utility to populate a quaternion
 	inline void set(float w_, float x_, float y_, float z_) {
-		w = w_; ijk.x = x_; ijk.y = y_; ijk.z = z_;
+		w = w_; i = x_; j = y_; k = z_;
 	}
 
 	/// Another little utility to populate a quaternion
 	inline void set(float w_, Vec3 ijk_) {
-		w = w_; ijk.x = ijk_.x; ijk.y = ijk_.y; ijk.z = ijk_.z;
+		w = w_; i = ijk_.x; j = ijk_.y; k = ijk_.z;
 	}
 
 	/// This is the unit quaterion by definition 
@@ -54,18 +46,18 @@ public:
 
 	/// A copy constructor
 	inline Quaternion(const Quaternion& q) {
-		set(q.w, q.ijk.x, q.ijk.y, q.ijk.z);
+		set(q.w, q.i, q.j, q.k);
 	}
 
 	/// An assignment operator   
 	inline Quaternion& operator = (const Quaternion& q) {
-		set(q.w, q.ijk.x, q.ijk.y, q.ijk.z);
+		set(q.w, q.i, q.j, q.k);
 		return *this;
 	}
 
 	/// Take the negative of a Quaternion
 	inline const Quaternion operator - () const {
-		return Quaternion(-w, Vec3(-ijk.x, -ijk.y, -ijk.z));
+		return Quaternion(-w, Vec3(-i, -j, -k));
 	}
 
 	/// Multiply a two quaternions - using the right-hand rule 
@@ -74,10 +66,10 @@ public:
 	/// correctly.
 	inline const Quaternion operator * (const Quaternion& q) const {
 		Quaternion result;
-		result.w = (w * q.w) - (ijk.x * q.ijk.x) - (ijk.y * q.ijk.y) - (ijk.z * q.ijk.z);
-		result.ijk.x = (w * q.ijk.x) + (ijk.x * q.w) - (ijk.z * q.ijk.y) + (ijk.y * q.ijk.z);
-		result.ijk.y = (w * q.ijk.y) + (ijk.y * q.w) - (ijk.x * q.ijk.z) + (ijk.z * q.ijk.x);
-		result.ijk.z = (w * q.ijk.z) + (ijk.z * q.w) - (ijk.y * q.ijk.x) + (ijk.x * q.ijk.y);
+		result.w = (w * q.w) - (i * q.i) - (j * q.j) - (k * q.k);
+		result.i = (w * q.i) + (i * q.w) - (k * q.j) + (j * q.k);
+		result.j = (w * q.j) + (j * q.w) - (i * q.k) + (k * q.i);
+		result.k = (w * q.k) + (k * q.w) - (j * q.i) + (i * q.j);
 		return result;		
 	}
 
@@ -87,19 +79,19 @@ public:
 	}
 
 	inline const Quaternion operator + (const Quaternion q) const {
-		return Quaternion(w + q.w, Vec3(ijk.x + q.ijk.x, ijk.y + q.ijk.y, ijk.z + q.ijk.z));
+		return Quaternion(w + q.w, Vec3(i + q.i, j + q.j, k + q.k));
 	}
 
 	inline const Quaternion operator - (const Quaternion q) const {
-		return Quaternion(w - q.w, Vec3(ijk.x - q.ijk.x, ijk.y - q.ijk.y, ijk.z - q.ijk.z));
+		return Quaternion(w - q.w, Vec3(i - q.i, j - q.j, k - q.k));
 	}
 
 	inline const Quaternion operator * (const float scalar) const {
-		return Quaternion(w * scalar, Vec3(ijk.x * scalar, ijk.y * scalar, ijk.z * scalar));
+		return Quaternion(w * scalar, Vec3(i * scalar, j * scalar, k * scalar));
 	}
 
 	inline const Quaternion operator / (const float scalar) const {
-		return Quaternion(w / scalar, Vec3(ijk.x / scalar, ijk.y / scalar, ijk.z / scalar));
+		return Quaternion(w / scalar, Vec3(i / scalar, j / scalar, k / scalar));
 	}
 
 	/// Now we can use the Quaternion like an array but we'll need two overloads
@@ -113,7 +105,7 @@ public:
 
 	inline void print(const char* comment = nullptr) const {
 		if (comment) printf("%s\n", comment);
-		printf("%1.4f %1.4f %1.4f %1.4f\n", ijk.x, ijk.y, ijk.z, w);
+		printf("%1.4f %1.4f %1.4f %1.4f\n", i, j, k, w);
 	}
 
 
@@ -126,20 +118,19 @@ public:
 		Quaternion p(0.0, v_);
 		/// Now just call the Quaternion * Quaternion operator
 		Quaternion result = *this * p;
-		return result.ijk;
+		return Vec3(result.i, result.j, result.k);
 	}
 	/// Multiply a Vec3 by a Quaternion (Vec3 * Quaternion) 
 	friend Vec3 operator * (const Vec3 v, const Quaternion& q) {
 		Quaternion qv(0.0f, v);
 		Quaternion result = qv * q;
-		return result.ijk;
+		return Vec3(result.i, result.j, result.k);
 	}
 
 	/// Seriously, the tilde ~ is the complement operator not the 
 	///  conjugate - but it was for fun. 
-	inline Quaternion operator~() { return Quaternion(w, -ijk); }
+	inline Quaternion operator~() { return Quaternion(w, Vec3(-i, -j, -k)); }
 	/////////////////////////////////////////////////////////////////////////
-
 
 	};
 }

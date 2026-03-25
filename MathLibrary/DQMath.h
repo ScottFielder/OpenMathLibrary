@@ -180,7 +180,7 @@ namespace MATHEX {
 			float angle = acos(rotation.w) * 2.0f;
 			MATH::Vec3 rotAxis(0, 1, 0); // pick a random rotn axis just in case angle is zero
 			if (fabs(angle) > VERY_SMALL) {
-				rotAxis = MATH::VMath::normalize(rotation.ijk);
+				rotAxis = MATH::VMath::normalize(Vec3(rotation.i, rotation.j, rotation.k));
 			}
 			// Now multiply the angle and translation by t
 			translation *= t;

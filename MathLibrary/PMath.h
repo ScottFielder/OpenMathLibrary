@@ -20,7 +20,8 @@ namespace MATHEX {
 		}
 
 		static MATH::Vec3 reflect(const MATH::Vec3 &v, const Plane &p){
-			return v - (2.0f * VMath::dot(p.n, v)) * p.n;
+			Vec3 n = Vec3(p.x, p.y, p.z);
+			return v - (2.0f * VMath::dot(n, v)) * n;
 		}
 
 		// It's wild, but the inverse of a plane, is the same plane?
@@ -86,8 +87,6 @@ namespace MATHEX {
 			// If we got this far, then the planes are basically describing the same thing
 			return true;
 		}
-
 	};
 }
-
 #endif

@@ -12,9 +12,9 @@ namespace MATH {
 		public:
 		static Euler toEuler(const Quaternion& q) {
 			Euler result;
-			result.roll = atan2(2.0f * (q.ijk.x * q.ijk.y + q.w * q.ijk.z), q.w * q.w + q.ijk.x * q.ijk.x - q.ijk.y * q.ijk.y - q.ijk.z * q.ijk.z);
-			result.pitch = atan2(2.0f * (q.ijk.y * q.ijk.z + q.w * q.ijk.x), q.w * q.w - q.ijk.x * q.ijk.x - q.ijk.y * q.ijk.y + q.ijk.z * q.ijk.z);
-			result.yaw = asin(std::clamp(-2.0f * (q.ijk.x * q.ijk.z - q.w * q.ijk.y), -1.0f, 1.0f));
+			result.roll = atan2(2.0f * (q.i * q.j + q.w * q.k), q.w * q.w + q.i * q.i - q.j * q.j - q.k * q.k);
+			result.pitch = atan2(2.0f * (q.j * q.k + q.w * q.i), q.w * q.w - q.i * q.i - q.j * q.j + q.k * q.k);
+			result.yaw = asin(std::clamp(-2.0f * (q.i * q.k - q.w * q.j), -1.0f, 1.0f));
 			return result * RADIANS_TO_DEGREES;
 		}
 

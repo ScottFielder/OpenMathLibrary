@@ -1,6 +1,5 @@
 #ifndef RMATH_H
 #define RMATH_H
-#include "Math.h"
 #include "Sphere.h"
 #include "Ray.h"
 #include "Plane.h"
@@ -13,7 +12,8 @@ namespace MATHEX {
         static bool doesIntersect(const Ray &ray, const Plane &plane){
             /// If the dot product of the ray's direction and the plane's normal are nearly zero,
             /// then the plane are ray are perpendicular therefore there is no intersection 
-            if (abs(VMath::dot(ray.direction, plane.n) < VERY_SMALL)) {
+            Vec3 n = Vec3(plane.x, plane.y, plane.z);
+            if (abs(VMath::dot(ray.direction, n) < VERY_SMALL)) {
                 return false;
             }
             return true;
@@ -21,14 +21,15 @@ namespace MATHEX {
 
         /// Done but not tested
         static Vec3 intersection(const Ray &ray, const Plane &plane){
-            float denominator = VMath::dot(ray.direction,plane.n);
+            Vec3 n = Vec3(plane.x, plane.y, plane.z);
+            float denominator = VMath::dot(ray.direction,n);
 #ifdef _DEBUG  /// If in debug mode let's worry about no intersection at all 	
 			if (abs(denominator) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
 				throw errorMsg.append(": The ray and Plane are parallel - no intersection");
 			}
 #endif
-            float t = -(VMath::dot(ray.start,plane.n) - plane.d) / denominator;
+            float t = -(VMath::dot(ray.start, n) - plane.d) / denominator;
             return ray.start + t * ray.direction;
         }
 

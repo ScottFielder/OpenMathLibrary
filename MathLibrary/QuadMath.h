@@ -31,7 +31,8 @@ namespace MATHEX {
 		}
 
 		static const MATH::Vec3 getNormal(const Quad& quad) {
-			Vec3 normal = getPlane(quad).n;
+			Plane plane = getPlane(quad);
+			MATH::Vec3 normal = Vec3(plane.x, plane.y, plane.z);
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (VMath::mag(normal) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
