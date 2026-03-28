@@ -14,7 +14,7 @@ namespace MATHEX {
 	struct DQMath {
 
 		/// Flip the sign on the axis of rotation and translation bivectors
-		static const DualQuat inverse(const DualQuat& dq) {
+		static DualQuat inverse(const DualQuat& dq) {
 			DualQuat result = dq;
 			result.e23 *= -1.0f;
 			result.e31 *= -1.0f;
@@ -202,19 +202,19 @@ namespace MATHEX {
 		// grade 2 at infinity is the e01, e02, e03 parts
 		// grade 4 is the e0123 part
 		// Line part of the dual quaternion is just the two grade 2 parts
-		static const float magGrade0(const DualQuat& dq) {
+		static float magGrade0(const DualQuat& dq) {
 			return fabs(dq.real);
 		}
 
-		static const float magGrade2(const DualQuat& dq) {
+		static float magGrade2(const DualQuat& dq) {
 			return sqrt(dq.e23 * dq.e23 + dq.e31 * dq.e31 + dq.e12 * dq.e12);
 		}
 
-		static const float magGrade2Infinity(const DualQuat& dq) {
+		static float magGrade2Infinity(const DualQuat& dq) {
 			return sqrt(dq.e01 * dq.e01 + dq.e02 * dq.e02 + dq.e03 * dq.e03);
 		}
 
-		static const float magGrade4Infinity(const DualQuat& dq) {
+		static float magGrade4Infinity(const DualQuat& dq) {
 			return fabs(dq.e0123);
 		}
 
@@ -233,7 +233,7 @@ namespace MATHEX {
 		}
 
 		// Return magnitude of the rotational part or the infinite part
-		static const float mag(const DualQuat& dq) {
+		static float mag(const DualQuat& dq) {
 			// Figure out whether this is a pure rotation or not
 			float quatMag = MATH::QMath::magnitude(getRotation(dq));
 			if (quatMag < VERY_SMALL) {
@@ -254,7 +254,7 @@ namespace MATHEX {
 
 		// Oriented distance between a point and a line (sign tells you which side of the line)
 		// EXAMPLE: https://github.com/ScottFielder/MathLibrary/blob/master/Notes/Oriented_distance_point_and_line.pdf
-		static const float orientedDist(const MATH::Vec4& v, const DualQuat& q) {
+		static float orientedDist(const MATH::Vec4& v, const DualQuat& q) {
 			// First normalize the point and plane 
 			MATH::Vec4  vNormalized = VMath::perspectiveDivide(v);
 			DualQuat    qNormalized = normalize(q);
@@ -341,7 +341,7 @@ namespace MATHEX {
 		// REFERENCE: https://hamishtodd1.substack.com/p/sphere-circle-and-cylinder-intersections
 		// EXAMPLE: https://github.com/ScottFielder/MathLibrary/blob/master/Notes/Line_intersection_sphere.pdf
 		// Returns true or false, and also two intersection points passed in by reference
-		static const bool lineSphereIntersection(const DualQuat& line, const MATH::Vec3& centre, float radius, MATH::Vec3& intersection1, MATH::Vec3& intersection2) {
+		static bool lineSphereIntersection(const DualQuat& line, const MATH::Vec3& centre, float radius, MATH::Vec3& intersection1, MATH::Vec3& intersection2) {
 			DualQuat normalizedLine = normalize(line);
 			Vec4 sphereCentre = Vec4(centre.x, centre.y, centre.z, 1.0f);
 			Flector M = normalizedLine * sphereCentre;
@@ -361,7 +361,7 @@ namespace MATHEX {
 
 		// REFERENCE: https://hamishtodd1.substack.com/p/sphere-circle-and-cylinder-intersections
 		// Returns true or false, and also two intersection points passed in by reference
-		static const bool lineCylinderIntersection(const DualQuat& line, const MATH::Vec3& capCentreA, const MATH::Vec3& capCentreB, float radius, MATH::Vec3& intersection1, MATH::Vec3& intersection2) {
+		static bool lineCylinderIntersection(const DualQuat& line, const MATH::Vec3& capCentreA, const MATH::Vec3& capCentreB, float radius, MATH::Vec3& intersection1, MATH::Vec3& intersection2) {
 			DualQuat normalizedLine = normalize(line);
 			DualQuat axis = normalize(Vec4(capCentreA, 1) & Vec4(capCentreB, 1));
 			Plane P = PMath::normalize(normalizedLine & (axis ^ Plane(0, 0, 0, 1)));

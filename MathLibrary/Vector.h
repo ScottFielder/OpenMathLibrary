@@ -30,49 +30,44 @@ namespace  MATH {
 		};
 
 		/// Just a little utility to populate a vector
-		void set(float x_, float y_, float z_) {
+		constexpr void set(float x_, float y_, float z_) {
 			x = x_; y = y_; z = z_;
 		}
 
 		/// Here's a set of constructors
-		Vec3() {
-			set(0.0f, 0.0f, 0.0f);
-		}
+		constexpr Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
 
-		Vec3(float x, float y, float z) {
-			set(x, y, z);
-		}
+		constexpr Vec3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
 
-		Vec3(const Vec3& v) {
-			set(v.x, v.y, v.z);
-		}
-
+		constexpr Vec3(const Vec3& v) : x(v.x), y(v.y), z(v.z) {}
+		
 		///////////////////////////////////////////////////////////
 		/// Operator overloads (see note 1 at the end of this file)
 		///////////////////////////////////////////////////////////
 
 		/// An assignment operator   
-		const Vec3& operator = (const Vec3& v) {
+		Vec3& operator = (const Vec3& v) {
+			///if (this != &v) protect against self-assignment
 			set(v.x, v.y, v.z);
 			return *this;
 		}
 
 		/// Now we can use the Vec3 like an array but we'll need two overloads
-		const float operator [] (int index) const {  /// This one is for reading the Vec3 as if where an array
+		float operator [] (int index) const {  /// This one is for reading the Vec3 as if where an array
 			return *(&x + index);
 		}
 
 		float& operator [] (int index) {	/// This one is for writing to the Vec3 as if where an array.  
-			return *(&x + index);					/// See note 2 at the end of this file about lvalues and rvalues
+			return *(&x + index);			/// See note 2 at the end of this file about lvalues and rvalues
 		}
 
 		/// Add two Vec3s
-		const Vec3 operator + (const Vec3& v) const {
+		Vec3 operator + (const Vec3& v) const {
 			return Vec3(x + v.x, y + v.y, z + v.z);
 		}
 
 		/// Add a Vec3 to itself
-		const Vec3& operator += (const Vec3& v) {
+		Vec3& operator += (const Vec3& v) {
 			x += v.x;
 			y += v.y;
 			z += v.z;
@@ -80,17 +75,17 @@ namespace  MATH {
 		}
 
 		/// Take the negative of a Vec3
-		const Vec3 operator - () const {
+		Vec3 operator - () const {
 			return Vec3(-x, -y, -z);
 		}
 
 		/// Subtract two Vec3s
-		const Vec3 operator - (const Vec3& v) const {
+		Vec3 operator - (const Vec3& v) const {
 			return Vec3(x - v.x, y - v.y, z - v.z);
 		}
 
 		/// Subtract a Vec 3 from itself
-		const Vec3& operator -= (const Vec3& v) {
+		Vec3& operator -= (const Vec3& v) {
 			x -= v.x;
 			y -= v.y;
 			z -= v.z;
@@ -98,7 +93,7 @@ namespace  MATH {
 		}
 
 		/// Multiply a Vec3 by a scalar
-		inline const Vec3  operator * (const float s) const {
+		Vec3 operator * (const float s) const {
 			return Vec3(s * x, s * y, s * z);
 		}
 
@@ -120,7 +115,7 @@ namespace  MATH {
 
 
 		/// Divide by a scalar - Watch for divide by zero issues
-		const Vec3 operator / (const float s) const {
+		Vec3 operator / (const float s) const {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero 
 			if (fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -132,7 +127,7 @@ namespace  MATH {
 		}
 
 
-		inline Vec3& operator /= (const float s) {
+		Vec3& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -165,7 +160,7 @@ namespace  MATH {
 		/// Create a Vec3 from a Vec4 - This is a bit of trouble. 
 		/// The Vec4 definition has not been read yet so the compiler has no idea
 		/// about Vec4. Just above the Vec3 definition, I do a forward declaration of 
-		/// union Vec4. This allows this prototype to exist. The actual code for this 
+		/// union Vec4. This allows the prototype to exist. The actual code for this 
 		/// constructor is listed just after the end of the Vec4 definition. 
 		inline Vec3(const Vec4& v);
 		inline Vec3& operator = (const Vec4& v); /// An assignment operator from a Vec4 
@@ -193,7 +188,7 @@ namespace  MATH {
 		Vec4(const Vec3& v) :x(v.x), y(v.y), z(v.z), w(1.0f) {}
 
 		/// An assignment operator
-		inline Vec4& operator = (const Vec4& v) {
+		Vec4& operator = (const Vec4& v) {
 			x = v.x;
 			y = v.y;
 			z = v.z;
@@ -202,15 +197,15 @@ namespace  MATH {
 		}
 
 		/// See how I did it in the Vec3 definition 
-		inline float& operator [] (int index) {
+		float& operator [] (int index) {
 			return *(&x + index);
 		}
-		inline const float operator [] (int i) const {
+		float operator [] (int i) const {
 			return *(&x + i);
 		}
 
 		/// See the Vec3 definition 
-		inline Vec4 operator + (const Vec4& v) const {
+		Vec4 operator + (const Vec4& v) const {
 			return Vec4(x + v.x, y + v.y, z + v.z, w + v.w);
 		}
 
@@ -238,11 +233,11 @@ namespace  MATH {
 			return *this;
 		}
 
-		inline Vec4 operator * (const float s) const {
+		Vec4 operator * (const float s) const {
 			return Vec4(s * x, s * y, s * z, s * w);
 		}
 
-		inline Vec4& operator *= (const float s) {
+		Vec4& operator *= (const float s) {
 			x *= s;
 			y *= s;
 			z *= s;
@@ -254,7 +249,7 @@ namespace  MATH {
 			return v * s;
 		}
 
-		inline Vec4 operator / (const float s) const {
+		Vec4 operator / (const float s) const {
 #ifdef DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -265,31 +260,30 @@ namespace  MATH {
 			return *this * r;
 		}
 
-		inline Vec4& operator /= (const float s) {
+		Vec4& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif 
-
 			float r = 1.0f / s;
 			*this *= r;
 			return *this;
 		}
 
-		inline void print(const char* comment = nullptr) const {
+		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("%1.8f %1.8f %1.8f %1.8f\n", x, y, z, w);
 		}
 
 
 		/// Type conversion operators 
-		inline operator const float* () const {
+		operator const float* () const {
 			return static_cast<const float*>(&x);
 		}
 
-		inline operator float* () {
+		operator float* () {
 			return static_cast<float*>(&x);
 		}
 
@@ -298,8 +292,8 @@ namespace  MATH {
 
 	/// These are defined in the Vec3 definition but because they have a Vec4 in them 
 	/// I can't code them until after the Vec4 definition
-	Vec3::Vec3(const Vec4& v) : x(v.x), y(v.y), z(v.z) {}
-	Vec3& Vec3::operator = (const Vec4& v) {
+	inline Vec3::Vec3(const Vec4& v) : x(v.x), y(v.y), z(v.z) {}
+	inline Vec3& Vec3::operator = (const Vec4& v) {
 		set(v.x, v.y, v.z);
 		return *this;
 	}
@@ -313,27 +307,27 @@ namespace  MATH {
 			x = x_; y = y_;
 		}
 		/// Here's a set of constructors
-		inline  Vec2() {
+		Vec2() {
 			set(0.0f, 0.0f);
 		}
 
-		inline Vec2(float x, float y) {
+		Vec2(float x, float y) {
 			set(x, y);
 		}
 
 		/// A copy constructor
-		inline Vec2(const Vec2& v) {
+		Vec2(const Vec2& v) {
 			set(v.x, v.y);
 		}
 		
 		/// An assignment operator   
-		const Vec2& operator = (const Vec2& v) {
+		Vec2& operator = (const Vec2& v) {
 			set(v.x, v.y);
 			return *this;
 		}
 
 		/// Now we can use the Vec2 like an array but we'll need two overloads
-		const float operator [] (int index) const {  /// This one is for reading the Vec2 as if where an array
+		float operator [] (int index) const {  /// This one is for reading the Vec2 as if where an array
 			return *(&x + index);
 		}
 
@@ -342,36 +336,36 @@ namespace  MATH {
 		}
 
 		/// Add two Vec2s
-		const Vec2 operator + (const Vec2 v) const {
+		Vec2 operator + (const Vec2 v) const {
 			return Vec2(x + v.x, y + v.y);
 		}
 
 		/// Add a Vec3 to itself
-		const Vec2& operator += (const Vec2& v) {
+		Vec2& operator += (const Vec2& v) {
 			x += v.x;
 			y += v.y;
 			return *this;
 		}
 
 		/// Take the negative of a Vec2
-		const Vec2 operator - () const {
+		Vec2 operator - () const {
 			return Vec2(-x, -y);
 		}
 
 		/// Subtract two Vec3s
-		const Vec2 operator - (const Vec2& v) const {
+		Vec2 operator - (const Vec2& v) const {
 			return Vec2(x - v.x, y - v.y);
 		}
 
 		/// Subtract a Vec 3 from itself
-		const Vec2& operator -= (const Vec2& v) {
+		Vec2& operator -= (const Vec2& v) {
 			x -= v.x;
 			y -= v.y;
 			return *this;
 		}
 
 		/// Multiply a Vec2 by a scalar
-		inline const Vec2 operator * (const float s) const {
+		Vec2 operator * (const float s) const {
 			return Vec2(s * x, s * y);
 		}
 
@@ -391,7 +385,7 @@ namespace  MATH {
 
 
 		/// Divide by a scalar - Watch for divide by zero issues
-		const Vec2 operator / (const float s) const {
+		Vec2 operator / (const float s) const {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero 
 			if (fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -403,7 +397,7 @@ namespace  MATH {
 		}
 
 
-		inline Vec2& operator /= (const float s) {
+		Vec2& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -415,7 +409,7 @@ namespace  MATH {
 			return *this;
 		}
 
-		inline void print(const char* comment = nullptr) const {
+		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("%1.8f %1.8f\n", x, y);
 		}

@@ -30,8 +30,9 @@ namespace  MATH {
 	private:
 		float  m[16];
 	public:
+		constexpr Matrix4(const Matrix4&) = default;
 
-		inline Matrix4& operator = (const Matrix4& m_) {
+		Matrix4& operator = (const Matrix4& m_) {
 			this->m[0] = m_[0]; this->m[1] = m_[1]; this->m[2] = m_[2]; this->m[3] = m_[3];
 			this->m[4] = m_[4]; this->m[5] = m_[5]; this->m[6] = m_[6]; this->m[7] = m_[7];
 			this->m[8] = m_[8]; this->m[9] = m_[9]; this->m[10] = m_[10]; this->m[11] = m_[11];
@@ -40,7 +41,7 @@ namespace  MATH {
 		}
 
 
-		inline Matrix4(float x0, float x1, float x2, float x3,
+		Matrix4(float x0, float x1, float x2, float x3,
 			float y0, float y1, float y2, float y3,
 			float z0, float z1, float z2, float z3,
 			float w0, float w1, float w2, float w3) {
@@ -54,13 +55,13 @@ namespace  MATH {
 		/// (If the argument within the constructor is pre-defined, as in this case 1.0f, the 
 		/// zero argument constructor will use 1.0f as the argument. Anything other than
 		/// 1.0f will be assigned to the float d)
-		inline Matrix4() {
+		Matrix4() {
 			loadIdentity();
 		}
 
 
 		/// Creates the identity matrix
-		inline void loadIdentity() {
+		void loadIdentity() {
 			m[0] = 1.0f;   m[4] = 0.0f;   m[8] = 0.0f;   m[12] = 0.0f;
 			m[1] = 0.0f;   m[5] = 1.0f;   m[9] = 0.0f;   m[13] = 0.0f;
 			m[2] = 0.0f;   m[6] = 0.0f;   m[10] = 1.0f;   m[14] = 0.0f;
@@ -71,7 +72,7 @@ namespace  MATH {
 		/// Grrr, I never liked mulipling maticies - but it needs to be done. 
 		/// Tested 3/7/2017 SSF
 
-		inline const Matrix4 operator*(const Matrix4& n) const {
+		 Matrix4 operator*(const Matrix4& n) const {
 			
 			/// This approach is about 8 nanoseconds faster, not because I unrolled the loops but because of the constructor, ask me. 
 			return Matrix4(
@@ -106,14 +107,14 @@ namespace  MATH {
 
 		/// Multipling a matrix by itself is probably the most commom
 		/// ("this" is the address of the matrix object itself. "*this" de-references that address
-		inline Matrix4& operator*=(const Matrix4& n) {
+		Matrix4& operator*=(const Matrix4& n) {
 			*this = *this * n;
 			return *this;
 		}
 
 		/// 2022 June, Multiply a Vec4 by this matrix and return the resulting Vec4, 
 		/// removed the divide by w in the result. 
-		inline  Vec4 operator* (const Vec4& v) const {
+		Vec4 operator* (const Vec4& v) const {
 			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + v.w * m[12];
 			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + v.w * m[13];
 			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + v.w * m[14];
@@ -124,11 +125,12 @@ namespace  MATH {
 		/// Multiply a Vec3 by this matrix and return the resulting Vec3
 		/// Mathematicians would say this is impossible but this is just 
 		/// code.  I will assume the w-component of the Vec3 is 1.0.
-		inline  Vec3 operator* (const Vec3& v) const {
+		Vec3 operator* (const Vec3& v) const {
 			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + 1.0f * m[12];
 			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + 1.0f * m[13];
 			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + 1.0f * m[14];
-			float w = v.x * m[3] + v.y * m[7] + v.z * m[11] + 1.0f * m[15];
+			/// It would have looked like this but I'm ignoring it
+			//float w = v.x * m[3] + v.y * m[7] + v.z * m[11] + 1.0f * m[15];
 			return Vec3(x, y, z);
 		}
 
@@ -136,22 +138,22 @@ namespace  MATH {
 		/// When overloading the [] operator you need to declair one
 		/// to read the array and one to write to the array. 
 		///  Returns a const - the rvalue
-		inline const float operator [] (int index) const {
+		float operator [] (int index) const {
 			return *(m + index);
 		}
 
 		/// This one is for writing to the structure as if where an array 
 		/// it returns a modifiable lvalue
-		inline float& operator [] (int index) {
+		float& operator [] (int index) {
 			return *(m + index);
 		}
 
 		/// These allows the convertion from type Matrix to const float * without issues
-		inline operator float* () { return static_cast<float*>(&m[0]); }
-		inline operator const float* () const { return static_cast<const float*>(&m[0]); }
+		operator float* () { return static_cast<float*>(&m[0]); }
+		operator const float* () const { return static_cast<const float*>(&m[0]); }
 
 		/// Print the Matrix4 in column form (right-hand rule), add a comment if you wish 
-		inline void print(const char* comment = nullptr) const {
+		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("%1.4f %1.4f %1.4f %1.4f\n%1.4f %1.4f %1.4f %1.4f \n%1.4f %1.4f %1.4f %1.4f \n%1.4f %1.4f %1.4f %1.4f \n\n",
 				m[0], m[4], m[8], m[12],
@@ -187,8 +189,9 @@ namespace  MATH {
 	private:
 		float  m[9];
 	public:
-		/// Constuctors
-		inline Matrix3(float xx, float yx, float zx,
+		constexpr Matrix3(const Matrix3&) = default;
+
+		Matrix3(float xx, float yx, float zx,
 			float xy, float yy, float zy,
 			float xz, float yz, float zz) {
 			m[0] = xx;   m[3] = xy;   m[6] = xz;
@@ -198,7 +201,7 @@ namespace  MATH {
 		}
 
 		/// Create the unit matrix probably the most common way of initializing a matrix
-		inline Matrix3() {
+		Matrix3() {
 			loadIdentity();
 		}
 
@@ -207,17 +210,17 @@ namespace  MATH {
 		/// When overloading the [] operator you need to declair one
 		/// to read the array and one to write to the array. 
 		///  Returns a const rvalue
-		inline const float operator [] (int index) const {
+		float operator [] (int index) const {
 			return *(m + index);
 		}
 
 		/// This one is for writing to the class as if where an array 
 		/// it returns a lvalue
-		inline float& operator [] (int index) {
+		float& operator [] (int index) {
 			return *(m + index);
 		}
 
-		inline Matrix3& operator = (const Matrix3& m_) {
+		Matrix3& operator = (const Matrix3& m_) {
 			this->m[0] = m_[0]; this->m[1] = m_[1]; this->m[2] = m_[2];
 			this->m[3] = m_[3]; this->m[4] = m_[4]; this->m[5] = m_[5];
 			this->m[6] = m_[6]; this->m[7] = m_[7]; this->m[8] = m_[8];
@@ -226,14 +229,14 @@ namespace  MATH {
 
 
 		/// Creates the identity matrix
-		inline void loadIdentity() {
+		void loadIdentity() {
 			m[0] = 1.0f;   m[3] = 0.0f;   m[6] = 0.0f;
 			m[1] = 0.0f;   m[4] = 1.0f;   m[7] = 0.0f;
 			m[2] = 0.0f;   m[5] = 0.0f;   m[8] = 1.0f;
 		}
 
 		/// Multiply a Vec3 by this matrix and return the resulting Vec3
-		inline  Vec3 operator* (const Vec3& v) const {
+		Vec3 operator* (const Vec3& v) const {
 			float x = v.x * m[0] + v.y * m[3] + v.z * m[6];
 			float y = v.x * m[1] + v.y * m[4] + v.z * m[7];
 			float z = v.x * m[2] + v.y * m[5] + v.z * m[8];
@@ -244,7 +247,7 @@ namespace  MATH {
 		/// In the Vec4 class I unrolled the loop and seek efficiency everywhere,
 		/// probably never matters in reality. 
 		/// Here, I just do with just loops. 
-		inline const Matrix3 operator*(const Matrix3& n) const {
+		Matrix3 operator*(const Matrix3& n) const {
 			Matrix3 result;
 			for (int i = 0; i < 3; ++i) {
 				for (int j = 0; j < 3; ++j) {
@@ -254,7 +257,7 @@ namespace  MATH {
 			return result;
 		}
 
-		inline Matrix3& operator*=(const Matrix3& n) {
+		Matrix3& operator*=(const Matrix3& n) {
 			*this = *this * n;
 			return *this;
 		}
@@ -265,7 +268,7 @@ namespace  MATH {
 		/// The upper 3x3 of a 4x4 contains only scale and rotation components. 
 		/// This will prove useful in many cases. 
 		/// This uses the assignment operator, inspite of my tenet of "least astonishment" 
-		inline Matrix3& operator = (const Matrix4& m_) {
+		Matrix3& operator = (const Matrix4& m_) {
 			m[0] = m_[0]; m[1] = m_[1]; m[2] = m_[2];
 			m[3] = m_[4]; m[4] = m_[5]; m[5] = m_[6];
 			m[6] = m_[8]; m[7] = m_[9]; m[8] = m_[10];
@@ -274,33 +277,33 @@ namespace  MATH {
 
 		/// Extracts the inner 3x3 from a 4x4 matrix
 		/// using the 3x3 constructor
-		inline Matrix3(const Matrix4& m_) {
+		Matrix3(const Matrix4& m_) {
 			m[0] = m_[0]; m[1] = m_[1]; m[2] = m_[2];
 			m[3] = m_[4]; m[4] = m_[5]; m[5] = m_[6];
 			m[6] = m_[8]; m[7] = m_[9]; m[8] = m_[10];
 		}
 
-		/// These allow me convert from type Matrix to const float * without issues
-		inline operator float* () { return static_cast<float*>(&m[0]); }
-		inline operator const float* () const { return static_cast<const float*>(&m[0]); }
+		/// These allows me convert from type Matrix to const float * without issues
+		operator float* () { return static_cast<float*>(&m[0]); }
+		operator const float* () const { return static_cast<const float*>(&m[0]); }
 
 
 		/// These functions set and return the columns of a Matrix3
 		/// Since the library is right-handed, the colunms are refered to 
 		/// as basis vectors.  
 		enum class Column : int { zero = 0, one, two };
-		inline Vec3 getColumn(Column index) {
+		Vec3 getColumn(Column index) {
 			return Vec3(m[3 * (int)index + 0], m[3 * (int)index + 1], m[3 * (int)index + 2]);
 		}
 
-		inline void setColumn(Column index, const Vec3 v) {
+		void setColumn(Column index, const Vec3 v) {
 			m[3 * (int)index + 0] = v[0];
 			m[3 * (int)index + 1] = v[1];
 			m[3 * (int)index + 2] = v[2];
 		}
 
 		/// Print the Matrix3 in column form (right-hand rule), add a comment if you wish
-		inline void print(const char* comment = nullptr) const {
+		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("%1.4f %1.4f %1.4f\n%1.4f %1.4f %1.4f\n%1.4f %1.4f %1.4f\n\n",
 				m[0], m[3], m[6],
@@ -318,7 +321,7 @@ namespace  MATH {
 		float  m[4];
 	public:
 		/// Constuctors
-		inline Matrix2(float xx, float yx,
+		Matrix2(float xx, float yx,
 			float xy, float yy) {
 			m[0] = xx;   m[2] = xy;   
 			m[1] = yx;   m[3] = yy;  
@@ -326,7 +329,7 @@ namespace  MATH {
 		}
 
 		/// Create the unit matrix probably the most common way of initializing a matrix
-		inline Matrix2() {
+		Matrix2() {
 			loadIdentity();
 		}
 
@@ -335,17 +338,17 @@ namespace  MATH {
 		/// When overloading the [] operator you need to declair one
 		/// to read the array and one to write to the array. 
 		///  Returns a const rvalue
-		inline const float operator [] (int index) const {
+		float operator [] (int index) const {
 			return *(m + index);
 		}
 
 		/// This one is for writing to the class as if where an array 
 		/// it returns a lvalue
-		inline float& operator [] (int index) {
+		float& operator [] (int index) {
 			return *(m + index);
 		}
 
-		inline Matrix2& operator = (const Matrix2& m_) {
+		Matrix2& operator = (const Matrix2& m_) {
 			this->m[0] = m_[0]; 
 			this->m[1] = m_[1]; 
 			this->m[2] = m_[2];
@@ -354,19 +357,19 @@ namespace  MATH {
 		}
 
 		/// Creates the identity matrix
-		inline void loadIdentity() {
+		void loadIdentity() {
 			m[0] = 1.0f;  m[2] = 0.0f;
 			m[1] = 0.0f;  m[3] = 1.0f;
 			
 		}
 
 		/// These allow me convert from type Matrix to const float* without issues
-		inline operator float* () { return static_cast<float*>(&m[0]); }
-		inline operator const float* () const { return static_cast<const float*>(&m[0]); }
+		operator float* () { return static_cast<float*>(&m[0]); }
+		operator const float* () const { return static_cast<const float*>(&m[0]); }
 
 
 		/// Print the Matrix2 in column form, add a comment if you wish
-		inline void print(const char* comment = nullptr) const {
+		void print(const char* comment = nullptr) const {
 			if (comment) printf("%s\n", comment);
 			printf("%1.4f %1.4f\n%1.4f %1.4f\n\n",
 				m[0], m[2],

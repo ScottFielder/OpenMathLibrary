@@ -26,37 +26,37 @@ public:
 	};
 
 	/// Just a little utility to populate a quaternion
-	inline void set(float w_, float x_, float y_, float z_) {
+	void set(float w_, float x_, float y_, float z_) {
 		w = w_; i = x_; j = y_; k = z_;
 	}
 
 	/// Another little utility to populate a quaternion
-	inline void set(float w_, Vec3 ijk_) {
+	void set(float w_, Vec3 ijk_) {
 		w = w_; i = ijk_.x; j = ijk_.y; k = ijk_.z;
 	}
 
 	/// This is the unit quaterion by definition 
-	inline Quaternion() {
+	Quaternion() {
 		set(1.0f, 0.0f, 0.0f, 0.0f);
 	}
 
-	inline Quaternion(float w_, const Vec3& ijk_) {
+	Quaternion(float w_, const Vec3& ijk_) {
 		set(w_, ijk_.x, ijk_.y, ijk_.z);
 	}
 
 	/// A copy constructor
-	inline Quaternion(const Quaternion& q) {
+	Quaternion(const Quaternion& q) {
 		set(q.w, q.i, q.j, q.k);
 	}
 
 	/// An assignment operator   
-	inline Quaternion& operator = (const Quaternion& q) {
+	Quaternion& operator = (const Quaternion& q) {
 		set(q.w, q.i, q.j, q.k);
 		return *this;
 	}
 
 	/// Take the negative of a Quaternion
-	inline const Quaternion operator - () const {
+	Quaternion operator - () const {
 		return Quaternion(-w, Vec3(-i, -j, -k));
 	}
 
@@ -64,7 +64,7 @@ public:
 	/// 2022-02-12 Scott edit. Worried that Umer uncovered a bug in my code,
 	/// I derived the multiply over again (this time less sexy) and it seems to work 
 	/// correctly.
-	inline const Quaternion operator * (const Quaternion& q) const {
+	Quaternion operator * (const Quaternion& q) const {
 		Quaternion result;
 		result.w = (w * q.w) - (i * q.i) - (j * q.j) - (k * q.k);
 		result.i = (w * q.i) + (i * q.w) - (k * q.j) + (j * q.k);
@@ -73,37 +73,37 @@ public:
 		return result;		
 	}
 
-	inline const Quaternion& operator *= (const Quaternion& q) {
+	Quaternion& operator *= (const Quaternion& q) {
 		*this = q * *this;
 		return *this;
 	}
 
-	inline const Quaternion operator + (const Quaternion q) const {
+	Quaternion operator + (const Quaternion q) const {
 		return Quaternion(w + q.w, Vec3(i + q.i, j + q.j, k + q.k));
 	}
 
-	inline const Quaternion operator - (const Quaternion q) const {
+	Quaternion operator - (const Quaternion q) const {
 		return Quaternion(w - q.w, Vec3(i - q.i, j - q.j, k - q.k));
 	}
 
-	inline const Quaternion operator * (const float scalar) const {
+	Quaternion operator * (const float scalar) const {
 		return Quaternion(w * scalar, Vec3(i * scalar, j * scalar, k * scalar));
 	}
 
-	inline const Quaternion operator / (const float scalar) const {
+	Quaternion operator / (const float scalar) const {
 		return Quaternion(w / scalar, Vec3(i / scalar, j / scalar, k / scalar));
 	}
 
 	/// Now we can use the Quaternion like an array but we'll need two overloads
-	inline const float operator [] (int index) const {  /// This one is for reading the Quaternion as if where an array
+	float operator [] (int index) const {  /// This one is for reading the Quaternion as if where an array
 		return *((float*)this + index);
 	}
 
-	inline float& operator [] (int index) {	/// This one is for writing to the Quaternion as if where an array.  
+	float& operator [] (int index) {	/// This one is for writing to the Quaternion as if where an array.  
 		return *((float*)this + index);
 	}
 
-	inline void print(const char* comment = nullptr) const {
+	void print(const char* comment = nullptr) const {
 		if (comment) printf("%s\n", comment);
 		printf("%1.4f %1.4f %1.4f %1.4f\n", i, j, k, w);
 	}
@@ -113,7 +113,7 @@ public:
 	/// This is just for teaching purposes - Caution, I'm getting out of control
 	/////////////////////////////////////////////////////////////////////////
 	/// Multiply a quaternion by a Vec3 (Quaternion * Vec3) 
-	inline const Vec3 operator * (const Vec3& v_) const {
+	const Vec3 operator * (const Vec3& v_) const {
 		/// Promote the Vec3 to a Quaternion and set w to be 0.0
 		Quaternion p(0.0, v_);
 		/// Now just call the Quaternion * Quaternion operator
@@ -129,7 +129,7 @@ public:
 
 	/// Seriously, the tilde ~ is the complement operator not the 
 	///  conjugate - but it was for fun. 
-	inline Quaternion operator~() { return Quaternion(w, Vec3(-i, -j, -k)); }
+	Quaternion operator~() { return Quaternion(w, Vec3(-i, -j, -k)); }
 	/////////////////////////////////////////////////////////////////////////
 
 	};

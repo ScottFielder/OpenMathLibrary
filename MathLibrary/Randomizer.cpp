@@ -91,15 +91,14 @@ float Randomizer::ran1(){
 
 /// G.E.P. Box and Mervin E. Muller, A Note on the Generation of Random Normal Deviates, 
 /// "The Annals of Mathematical Statistics" 1958
-double Randomizer::box_muller(const double mean, const double std_devation)	{
-	int idnum = -1;
+double Randomizer::box_muller(const double mean, const double std_devation)	{	
 	double x1, x2, w, y1;
 	static double y2;
-	static int use_last = 0;
+	static bool usePreviousValue = false;
 
-	if (use_last){ /// Use the value from the previous call - its a static 
+	if (usePreviousValue){ /// Use the value from the previous call 
 		y1 = y2;
-		use_last = 0;
+		usePreviousValue = false;
 	}
 	else{
 		do{
@@ -111,7 +110,7 @@ double Randomizer::box_muller(const double mean, const double std_devation)	{
 		w = sqrt((-2.0 *log(w)) / w);
 		y1 = x1 * w;
 		y2 = x2 * w;
-		use_last = 1;
+		usePreviousValue = true;
 	}
 
 	return(mean + y1 * std_devation);

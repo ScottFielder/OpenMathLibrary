@@ -18,7 +18,7 @@ namespace MATHEX {
 		float e03;
 		float e0123;
 
-		inline void set(float real_, float e23_, float e31_, float e12_, float e01_, float e02_, float e03_, float e0123_){
+		void set(float real_, float e23_, float e31_, float e12_, float e01_, float e02_, float e03_, float e0123_){
 			real = real_; e23 = e23_; e31 = e31_; e12 = e12_; e01 = e01_; e02 = e02_; e03 = e03_; e0123 = e0123_;
 		}
 
@@ -88,12 +88,12 @@ namespace MATHEX {
 		}
 
 		/// A copy constructor
-		inline DualQuat(const DualQuat& dq) {
+		DualQuat(const DualQuat& dq) {
 			set(dq.real, dq.e23, dq.e31, dq.e12, dq.e01, dq.e02, dq.e03, dq.e0123);
 		}
 
 		/// An assignment operator   
-		inline DualQuat& operator = (const DualQuat& dq) {
+		DualQuat& operator = (const DualQuat& dq) {
 			set(dq.real, dq.e23, dq.e31, dq.e12, dq.e01, dq.e02, dq.e03, dq.e0123);
 			return *this;
 		}
@@ -112,17 +112,17 @@ namespace MATHEX {
 		/// When overloading the [] operator you need to declare one
 		/// to read the array and one to write to the array. 
 		///  Returns a const - the rvalue
-		inline const float operator [] (int index) const {
+		float operator [] (int index) const {
 			return *(&real + index);
 		}
 
 		/// This one is for writing to the structure as if where an array 
 		/// it returns a modifiable lvalue
-		inline float& operator [] (int index) {
+		float& operator [] (int index) {
 			return *(&real + index);
 		}
 
-		inline const DualQuat operator * (float c) const {
+		const DualQuat operator * (float c) const {
 			DualQuat result;
 			result.real = real * c;
 			result.e23 = e23 * c;
@@ -135,7 +135,7 @@ namespace MATHEX {
 			return result;
 		}
 
-		inline const DualQuat operator / (float c) const {
+		DualQuat operator / (float c) const {
 #ifdef DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
@@ -146,7 +146,7 @@ namespace MATHEX {
 			return *this * r;
 		}
 
-		inline const DualQuat operator + (const DualQuat& dq) const {
+		DualQuat operator + (const DualQuat& dq) const {
 			DualQuat result;
 			result.real = real + dq.real;
 			result.e23 = e23 + dq.e23;
@@ -160,7 +160,7 @@ namespace MATHEX {
 		}
 
 		// Add to the real part of the dual quaternion
-		inline const DualQuat operator + (float w_) const {
+		DualQuat operator + (float w_) const {
 			DualQuat result;
 			result.real = real + w_;
 			result.e23 = e23;

@@ -53,7 +53,7 @@ namespace MATHEX {
 		}
 
 		// Oriented distance between a point and a plane (sign tells you which side of the plane)
-		static const float orientedDist(const MATH::Vec4& v, const Plane& p) {
+		static float orientedDist(const MATH::Vec4& v, const Plane& p) {
 			// First normalize the point and plane 
 			MATH::Vec4  vNormalized = VMath::perspectiveDivide(v);
 			Plane pNormalized = normalize(p);
@@ -62,7 +62,7 @@ namespace MATHEX {
 		}
 
 		// Are these two planes basically the same thing?
-		static const bool similar(const Plane& p1, const Plane& p2) {
+		static bool similar(const Plane& p1, const Plane& p2) {
 			Plane p1_normalized = normalize(p1);
 			Plane p2_normalized = normalize(p2);
 			// Are the normals pointing in the same direction or exactly opposite?

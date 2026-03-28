@@ -34,14 +34,14 @@ namespace MATHEX {
 		}
 
 		// UN - Tested 2025-02-24 for Sphere-Triangle collision assignment
-		static const bool isPointOnPlane(const MATH::Vec3& v, const Triangle& t) {
+		static bool isPointOnPlane(const MATH::Vec3& v, const Triangle& t) {
 			float distFromPlane = PMath::orientedDist(v, getPlane(t));
 			if (fabs(distFromPlane) > VERY_SMALL) return false;
 			return true;
 		}
 
 		// UN - Tested 2025-02-24 for Sphere-Triangle collision assignment
-		static const bool isPointInside(const MATH::Vec3& v, const Triangle& t) {
+		static bool isPointInside(const MATH::Vec3& v, const Triangle& t) {
 			// Are we in the plane of the triangle at least?	
 			if (!isPointOnPlane(v, t)) return false;
 			// Ok we are in the plane at least, now let's check if we are inside the triangle
@@ -64,7 +64,7 @@ namespace MATHEX {
 
 
 		// This method is just like isPointInside, but also takes into account the radius of the circle
-		static const bool isCircleTouchingTriangle(const MATH::Vec3& centre, const float radius, const Triangle& t) {
+		static bool isCircleTouchingTriangle(const MATH::Vec3& centre, const float radius, const Triangle& t) {
 			// Are we in the plane of the triangle at least?	
 			if (!isPointOnPlane(centre, t)) return false;
 			// Ok we are in the plane at least, now let's check if we are inside the triangle
@@ -86,7 +86,7 @@ namespace MATHEX {
 			return false;
 		}
 
-		static const bool areAllVerticesInsideSphere(const MATH::Vec3& centre, float radius, const Triangle& t) {
+		static bool areAllVerticesInsideSphere(const MATH::Vec3& centre, float radius, const Triangle& t) {
 			if ((VMath::distance(t.getV0(), centre) < radius) && (VMath::distance(t.getV1(), centre) < radius) && (VMath::distance(t.getV2(), centre))) {
 				return true;
 			}

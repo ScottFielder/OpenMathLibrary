@@ -18,7 +18,7 @@ namespace MATHEX {
 
 		// Find the surface area of the quad
 		// REFERENCE: https://github.com/ScottFielder/MathLibEx/blob/master/Literature/3D_PGA_Cheat_Sheet_2019_siggraph.pdf
-		static const float getArea(const Quad& quad) {
+		static float getArea(const Quad& quad) {
 			// Find the edge lines that go all the way round the quad
 			DualQuat line01 = Vec4(quad.getV0()) & Vec4(quad.getV1());
 			DualQuat line12 = Vec4(quad.getV1()) & Vec4(quad.getV2());
@@ -42,14 +42,14 @@ namespace MATHEX {
 			return VMath::normalize(normal);
 		}
 
-		static const bool isPointOnPlane(const MATH::Vec3& point, const Quad& quad) {
+		static bool isPointOnPlane(const MATH::Vec3& point, const Quad& quad) {
 			float distFromPlane = PMath::orientedDist(point, getPlane(quad));
 			if (fabs(distFromPlane) > VERY_SMALL) return false;
 			return true;
 		}
 
 		// Check if the point is on the left of all the edges or the right of all the edges
-		static const bool isPointInside(const MATH::Vec3& point, const Quad& quad) {
+		static bool isPointInside(const MATH::Vec3& point, const Quad& quad) {
 			// Are we in the plane of the quad at least?	
 			if (!isPointOnPlane(point, quad)) return false;
 			// Ok we are in the plane at least, now let's check if we are inside the quad
@@ -244,7 +244,7 @@ namespace MATHEX {
 					}
 
 				}
-			}
+			} /// Umer, I think you need a return here it's the end of your else statement
 		}
 	};
 }

@@ -71,12 +71,12 @@ namespace  MATHEX {
 
 		///////////////////////// Operator overloads ////////////////////////////
 
-		inline Plane& operator = (const Plane& p) {
+		Plane& operator = (const Plane& p) {
 			set(p.x, p.y, p.z, p.d);
 			return *this;
 		}
 
-		const Plane operator * (float s) const {
+		Plane operator * (float s) const {
 			return Plane(e1 * s, e2 * s, e3 * s, e0 * s);
 		}
 
@@ -84,7 +84,7 @@ namespace  MATHEX {
 			return p * s;
 		}
 
-		const Plane operator / (float s) const {
+		Plane operator / (float s) const {
 			return Plane(e1 / s, e2 / s, e3 / s, e0 / s);
 		}
 
@@ -92,11 +92,11 @@ namespace  MATHEX {
 			return p / s;
 		}
 
-		const Plane operator + (const Plane& p) const {
+		Plane operator + (const Plane& p) const {
 			return Plane(e1 + p.e1, e2 + p.e2, e3 + p.e3, e0 + p.e0);
 		}
 
-		const Plane operator - (const Plane& p) const {
+		Plane operator - (const Plane& p) const {
 			return Plane(e1 - p.e1, e2 - p.e2, e3 - p.e3, e0 - p.e0);
 		}
 
