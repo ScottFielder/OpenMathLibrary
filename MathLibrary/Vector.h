@@ -4,21 +4,16 @@
 #include <string> /// Used for passing exceptions 
 #include "ConstantsConversions.h"
 
-///
-/// Vec3 definitions followed by Vec4 
+
+/// Vec3 definitions followed by Vec4 then Vec2
 /// There are notes at the bottom of this file you might want to read
-///
 
 namespace  MATH {
-
-	
 
 /// I will need to forward declare the union Vec4 for the "Vec3(const Vec4& v)" 
 /// and "Vec3& operator = (const Vec4& v);" prototypes.  See the Vec3 code and the end of the 
 /// Vec4 for the body of the code
-	union Vec4;
-
-
+union Vec4;
 
 	union Vec3 {
 		struct {
@@ -36,18 +31,21 @@ namespace  MATH {
 
 		/// Here's a set of constructors
 		constexpr Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
-
 		constexpr Vec3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
-
 		constexpr Vec3(const Vec3& v) : x(v.x), y(v.y), z(v.z) {}
+		/// Create a Vec3 from a Vec4 - This is a bit of trouble. 
+		/// The Vec4 definition has not been read yet so the compiler has no idea
+		/// about Vec4. Just above the Vec3 definition, I do a forward declaration of 
+		/// union Vec4. This allows the prototype to exist. The actual code for this 
+		/// constructor is listed just after the end of the Vec4 definition. 
 		
-		///////////////////////////////////////////////////////////
-		/// Operator overloads (see note 1 at the end of this file)
-		///////////////////////////////////////////////////////////
+		/// Forward declaration 
+		constexpr Vec3(const Vec4& v);
+		Vec3& operator = (const Vec4& v); /// An assignment operator from a Vec4 
 
-		/// An assignment operator   
+		/// Operator overloads (see note 1 at the end of this file)
 		Vec3& operator = (const Vec3& v) {
-			///if (this != &v) protect against self-assignment
+			///if (this != &v) ///protect against self-assignment - should I bother?
 			set(v.x, v.y, v.z);
 			return *this;
 		}
@@ -61,12 +59,10 @@ namespace  MATH {
 			return *(&x + index);			/// See note 2 at the end of this file about lvalues and rvalues
 		}
 
-		/// Add two Vec3s
 		Vec3 operator + (const Vec3& v) const {
 			return Vec3(x + v.x, y + v.y, z + v.z);
 		}
 
-		/// Add a Vec3 to itself
 		Vec3& operator += (const Vec3& v) {
 			x += v.x;
 			y += v.y;
@@ -74,17 +70,14 @@ namespace  MATH {
 			return *this;
 		}
 
-		/// Take the negative of a Vec3
 		Vec3 operator - () const {
 			return Vec3(-x, -y, -z);
 		}
 
-		/// Subtract two Vec3s
 		Vec3 operator - (const Vec3& v) const {
 			return Vec3(x - v.x, y - v.y, z - v.z);
 		}
 
-		/// Subtract a Vec 3 from itself
 		Vec3& operator -= (const Vec3& v) {
 			x -= v.x;
 			y -= v.y;
@@ -92,11 +85,9 @@ namespace  MATH {
 			return *this;
 		}
 
-		/// Multiply a Vec3 by a scalar
 		Vec3 operator * (const float s) const {
 			return Vec3(s * x, s * y, s * z);
 		}
-
 
 		/// Multiply a scaler by a Vec3  It's the scalar first then the Vec3
 		/// Overloaded and a friend, ouch! It's the only way to make it work with a scalar first.
@@ -105,7 +96,6 @@ namespace  MATH {
 			return v * s;
 		}
 
-		/// Multiply a Vec3 by a scalar and assign it to itself
 		Vec3& operator *= (const float s) {
 			x *= s;
 			y *= s;
@@ -128,13 +118,13 @@ namespace  MATH {
 
 
 		Vec3& operator /= (const float s) {
-#ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
+#ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero. 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
 				throw errorMsg.append(": Divide by nearly zero! ");
 
 			}
-#endif // DEBUG
+#endif 
 			float r = 1.0f / s;
 			*this *= r;
 			return *this;
@@ -145,9 +135,8 @@ namespace  MATH {
 			printf("%1.8f %1.8f %1.8f\n", x, y, z);
 		}
 
-		///
+		
 		/// Type conversion operators 
-		///
 		operator const float* () const {
 			return static_cast<const float*>(&x);
 		}
@@ -157,13 +146,7 @@ namespace  MATH {
 		}
 
 
-		/// Create a Vec3 from a Vec4 - This is a bit of trouble. 
-		/// The Vec4 definition has not been read yet so the compiler has no idea
-		/// about Vec4. Just above the Vec3 definition, I do a forward declaration of 
-		/// union Vec4. This allows the prototype to exist. The actual code for this 
-		/// constructor is listed just after the end of the Vec4 definition. 
-		inline Vec3(const Vec4& v);
-		inline Vec3& operator = (const Vec4& v); /// An assignment operator from a Vec4 
+		
 
 	};
 
@@ -181,11 +164,11 @@ namespace  MATH {
 		}
 
 		/// Here's a set of constructors
-		Vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-		Vec4(float x_, float y_, float z_, float w_) : x(x_), y(y_), z(z_), w(w_) {}
-		Vec4(const Vec4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
-		Vec4(const Vec3& v, const float w_) : x(v.x), y(v.y), z(v.z), w(w_) {}
-		Vec4(const Vec3& v) :x(v.x), y(v.y), z(v.z), w(1.0f) {}
+		constexpr Vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+		constexpr Vec4(float x_, float y_, float z_, float w_) : x(x_), y(y_), z(z_), w(w_) {}
+		constexpr Vec4(const Vec4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+		constexpr Vec4(const Vec3& v, const float w_) : x(v.x), y(v.y), z(v.z), w(w_) {}
+		constexpr Vec4(const Vec3& v) : x(v.x), y(v.y), z(v.z), w(1.0f) {}
 
 		/// An assignment operator
 		Vec4& operator = (const Vec4& v) {
@@ -209,7 +192,7 @@ namespace  MATH {
 			return Vec4(x + v.x, y + v.y, z + v.z, w + v.w);
 		}
 
-		inline Vec4& operator += (const Vec4& v) {
+		Vec4& operator += (const Vec4& v) {
 			x += v.x;
 			y += v.y;
 			z += v.z;
@@ -217,15 +200,15 @@ namespace  MATH {
 			return *this;
 		}
 
-		inline Vec4 operator - () const {
+		Vec4 operator - () const {
 			return Vec4(-x, -y, -z, -w);
 		}
 
-		inline Vec4 operator - (const Vec4& v) const {
+		Vec4 operator - (const Vec4& v) const {
 			return Vec4(x - v.x, y - v.y, z - v.z, v.w - w);
 		}
 
-		inline Vec4& operator -= (const Vec4& v) {
+		Vec4& operator -= (const Vec4& v) {
 			x -= v.x;
 			y -= v.y;
 			z -= v.z;
@@ -292,7 +275,7 @@ namespace  MATH {
 
 	/// These are defined in the Vec3 definition but because they have a Vec4 in them 
 	/// I can't code them until after the Vec4 definition
-	inline Vec3::Vec3(const Vec4& v) : x(v.x), y(v.y), z(v.z) {}
+	inline constexpr Vec3::Vec3(const Vec4& v) : x(v.x), y(v.y), z(v.z) {}
 	inline Vec3& Vec3::operator = (const Vec4& v) {
 		set(v.x, v.y, v.z);
 		return *this;
@@ -420,9 +403,9 @@ namespace  MATH {
 
 
 /*** Note 1.
-I know, I hate operator overloading as a general rule but a few make sense!! Just be careful and
+I hate operator overloading as a general rule but a few make sense!! Just be careful and
 be consistent. In this code, I will overload many operators. I don't believe in
-overloading when the operator is less than obvious.
+overloading when the operator's job is less than obvious.
 For example, in this class, the relational operators (== != < > <= >=) might mean "in relation
 to their magnitude or direction" I'm just not sure. Just write a function to do that and don't make
 me guess what the operator might mean. Use the idea of "Least Astonishment" don't surprise me,
@@ -434,7 +417,7 @@ In straight C programming, lvalues and rvalues literally means left and right as
 int x = 5; x is the lvalue and 5 is the rvalue. Easy. In C++ it get a bit more tricky. The modern idea is
 rvalues are temporary values residing in the registers of the CPU. lvalues are actual memory locations.
 In the code:
-	inline float& operator [] ( int index ) {
+	float& operator [] ( int index ) {
 		return *(&x + index);
 	}
 To read this precisely, &x is the address of the x variable (the first in the list of x,y,z) add to that
