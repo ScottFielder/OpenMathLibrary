@@ -33,7 +33,7 @@ union Vec4;
 		constexpr Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
 		constexpr Vec3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
 		constexpr Vec3(const Vec3& v) : x(v.x), y(v.y), z(v.z) {}
-		/// Create a Vec3 from a Vec4 - This is a bit of trouble. 
+		/// Create a Vec3 from a Vec4 - This is a bit of a bother. 
 		/// The Vec4 definition has not been read yet so the compiler has no idea
 		/// about Vec4. Just above the Vec3 definition, I do a forward declaration of 
 		/// union Vec4. This allows the prototype to exist. The actual code for this 
@@ -45,7 +45,7 @@ union Vec4;
 
 		/// Operator overloads (see note 1 at the end of this file)
 		Vec3& operator = (const Vec3& v) {
-			///if (this != &v) ///protect against self-assignment - should I bother?
+			///if (this != &v) ///protection against self-assignment - should I bother?
 			set(v.x, v.y, v.z);
 			return *this;
 		}
@@ -159,7 +159,7 @@ union Vec4;
 			float  e032, e013, e021, e123;
 		};
 
-		inline void set(float x_, float y_, float z_, float w_) {
+		constexpr void set(float x_, float y_, float z_, float w_) {
 			x = x_; y = y_; z = z_; w = w_;
 		}
 
@@ -286,17 +286,13 @@ union Vec4;
 	struct Vec2 {
 		float  x, y;
 		/// Just a little utility to populate a vector
-		void set(float x_, float y_) {
+		constexpr void set(float x_, float y_) {
 			x = x_; y = y_;
 		}
 		/// Here's a set of constructors
-		Vec2() {
-			set(0.0f, 0.0f);
-		}
-
-		Vec2(float x, float y) {
-			set(x, y);
-		}
+		constexpr Vec2(): x(0.0f),y(.0f) {}
+		constexpr Vec2(float x_, float y_): x(x_),y(y_) {}
+		
 
 		/// A copy constructor
 		Vec2(const Vec2& v) {
