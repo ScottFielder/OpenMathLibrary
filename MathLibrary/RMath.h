@@ -25,8 +25,8 @@ namespace MATHEX {
             float denominator = VMath::dot(ray.direction,n);
 #ifdef _DEBUG  /// If in debug mode let's worry about no intersection at all 	
 			if (abs(denominator) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": The ray and Plane are parallel - no intersection");
+				std::string errorMsg = ": The ray and Plane are parallel - no intersection";
+				throw errorMsg;
 			}
 #endif
             float t = -(VMath::dot(ray.start, n) - plane.d) / denominator;

@@ -30,8 +30,8 @@ namespace  MATHEX {
 			v2 = v2_;
 #ifdef _DEBUG  /// If in debug mode let's worry if this triangle makes sense
 			if (!isValid()) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": This is not a valid triangle");
+				std::string errorMsg = ": This is not a valid triangle";
+				throw errorMsg;
 			}
 #endif // DEBUG
 		}

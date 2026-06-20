@@ -78,8 +78,8 @@ namespace MATHEX {
 		inline const Point2d operator / (const float c) const {
 #ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			float r = 1.0f / c;
@@ -90,8 +90,8 @@ namespace MATHEX {
 		inline Point2d& operator /= (const float c) {
 #ifdef DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			x /= c;

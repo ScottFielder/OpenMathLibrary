@@ -108,8 +108,8 @@ union Vec4;
 		Vec3 operator / (const float s) const {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero 
 			if (fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			float r = 1.0f / s;
@@ -120,8 +120,8 @@ union Vec4;
 		Vec3& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero. 
 			if (std::fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 
 			}
 #endif 
@@ -235,8 +235,8 @@ union Vec4;
 		Vec4 operator / (const float s) const {
 #ifdef DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			float r = 1.0f / s;
@@ -246,8 +246,7 @@ union Vec4;
 		Vec4& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				
 			}
 #endif 
 			float r = 1.0f / s;
@@ -367,8 +366,8 @@ union Vec4;
 		Vec2 operator / (const float s) const {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero 
 			if (fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			float r = 1.0f / s;
@@ -379,8 +378,8 @@ union Vec4;
 		Vec2& operator /= (const float s) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif 
 			float r = 1.0f / s;

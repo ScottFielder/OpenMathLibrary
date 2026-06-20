@@ -48,7 +48,7 @@ namespace  MATH {
 
 		static Matrix4 perspective(const float fovy_, const float aspect_, const float zNear_, const float zFar_) {
 			float cot = 1.0f / tan(fovy_ * 0.5f * DEGREES_TO_RADIANS);
-			/// Don't forget, this looks row centric but it really is a column matrix - right-hand rule rules
+			/// Don't forget, this looks row centric but it really is a column matrix - the right-hand rule, rules
 			Matrix4 result(cot / aspect_, 0.0f, 0.0f, 0.0f,
 				0.0f, cot, 0.0f, 0.0f,
 				0.0f, 0.0f, (zNear_ + zFar_) / (zNear_ - zFar_), -1.0f,
@@ -95,8 +95,8 @@ namespace  MATH {
 			Matrix4 m1 = scale(1.0f, -1.0f, 1.0f);
 			// UN edit to match Songho
 			// https://www.songho.ca/opengl/gl_viewport.html
-			Matrix4 m2 = scale(float(width_) / 2.0f, float(height_) / 2.0f, (far - near) / 2.0f);
-			Matrix4 m3 = translate(float(width_) / 2.0f, float(height_) / 2.0f, (far + near) / 2.0f);
+			Matrix4 m2 = scale(static_cast<float>(width_) / 2.0f, static_cast<float>(height_) / 2.0f, (far - near) / 2.0f);
+			Matrix4 m3 = translate(static_cast<float>(width_) / 2.0f, static_cast<float>(height_) / 2.0f, (far + near) / 2.0f);
 			m = m3 * m2 * m1;
 			return m;
 		}
@@ -273,8 +273,8 @@ namespace  MATH {
 
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (fabs(determinate) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			for (int i = 0; i < 9; i++) {
@@ -312,8 +312,8 @@ namespace  MATH {
 
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (fabs(determinate) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			for (int i = 0; i < 16; i++) {

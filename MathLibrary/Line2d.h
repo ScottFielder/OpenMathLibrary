@@ -93,8 +93,8 @@ namespace MATHEX {
 		inline const Line2d operator / (const float scalar) const {
 #ifdef _DEBUG 
 			if (std::fabs(scalar) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			float r = 1.0f / scalar;
@@ -105,8 +105,8 @@ namespace MATHEX {
 		inline Line2d& operator /= (const float scalar) {
 #ifdef DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			x /= scalar;

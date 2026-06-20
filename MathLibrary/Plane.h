@@ -29,8 +29,8 @@ namespace  MATHEX {
 #ifdef _DEBUG  /// If in debug mode let's worry the normal being normalized
 			float mag = MATH::VMath::mag(n);
 			if (std::fabs(mag) - 1.0f > VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": The normal in the Plane constructor was not normalized");
+				std::string errorMsg = ": The normal in the Plane constructor was not normalized";
+				throw errorMsg;
 			}
 #endif // DEBUG
 		}

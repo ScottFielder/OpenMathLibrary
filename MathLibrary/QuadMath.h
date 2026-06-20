@@ -35,8 +35,8 @@ namespace MATHEX {
 			MATH::Vec3 normal = Vec3(plane.x, plane.y, plane.z);
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (VMath::mag(normal) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			return VMath::normalize(normal);

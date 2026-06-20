@@ -138,9 +138,8 @@ namespace MATHEX {
 		DualQuat operator / (float c) const {
 #ifdef DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
-			}
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 #endif
 			float r = 1.0f / c;
 			return *this * r;

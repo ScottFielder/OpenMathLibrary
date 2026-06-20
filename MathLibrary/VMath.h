@@ -64,8 +64,8 @@ namespace MATH {
 			float magnitude = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (magnitude < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			return Vec3(a.x / magnitude, a.y / magnitude, a.z / magnitude);
@@ -76,8 +76,8 @@ namespace MATH {
 			float magnitude = sqrt(a.x * a.x + a.y * a.y);
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (magnitude < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			return Vec2(a.x / magnitude, a.y / magnitude);
@@ -113,8 +113,8 @@ namespace MATH {
 		static Vec4 perspectiveDivide(const Vec4& v) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (fabs(v.w) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
-				throw errorMsg.append(": Divide by nearly zero! ");
+				std::string errorMsg = "Divide by nearly zero ";
+				throw errorMsg;
 			}
 #endif
 			return Vec4(v.x / v.w, v.y / v.w, v.z / v.w, 1.0f);
