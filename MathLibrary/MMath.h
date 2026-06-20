@@ -248,7 +248,7 @@ namespace  MATH {
 		}
 
 		static float determinate(const Matrix2& m) {
-			return m[0] * m[3] - m[3] * m[1];
+			return m[0] * m[3] - m[2] * m[1];
 		}
 
 		static Matrix3 inverse(const Matrix3& m) {
@@ -268,7 +268,7 @@ namespace  MATH {
 			adjointM[4] = transposeM[0] * transposeM[8] - transposeM[6] * transposeM[2];
 			adjointM[5] = -transposeM[0] * transposeM[7] + transposeM[6] * transposeM[1];
 			adjointM[6] = transposeM[1] * transposeM[5] - transposeM[4] * transposeM[2];
-			adjointM[7] = -transposeM[0] * transposeM[5] + transposeM[3] * transposeM[5];
+			adjointM[7] = -transposeM[0] * transposeM[5] + transposeM[3] * transposeM[2];
 			adjointM[8] = transposeM[0] * transposeM[4] - transposeM[3] * transposeM[1];
 
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 

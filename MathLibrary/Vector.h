@@ -205,7 +205,7 @@ union Vec4;
 		}
 
 		Vec4 operator - (const Vec4& v) const {
-			return Vec4(x - v.x, y - v.y, z - v.z, v.w - w);
+			return Vec4(x - v.x, y - v.y, z - v.z, w - v.w);
 		}
 
 		Vec4& operator -= (const Vec4& v) {
@@ -233,7 +233,7 @@ union Vec4;
 		}
 
 		Vec4 operator / (const float s) const {
-#ifdef DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
+#ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 
 			if (std::fabs(s) < VERY_SMALL) {
 				std::string errorMsg = "Divide by nearly zero ";
 				throw errorMsg;
