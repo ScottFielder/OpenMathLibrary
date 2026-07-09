@@ -2,7 +2,7 @@
 #define POINT2D_H
 #include <cmath>    // Used for fabs
 #include <string>   // Used for stringing exception messages together
-#include "Vector.h" // Used for VERY_SMALL
+#include "ConstantsConversions.h" // Used for VERY_SMALL
 
 // Flatlanders live in a 2D plane have no idea what life is like in 3D
 // They guess this imagined third dimension is perpendicular to their familiar x and y directions
@@ -88,7 +88,7 @@ namespace MATHEX {
 
 		// Divide itself by a scalar
 		inline Point2d& operator /= (const float c) {
-#ifdef DEBUG 
+#ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
 				std::string errorMsg = "Divide by nearly zero ";
 				throw errorMsg;

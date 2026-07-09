@@ -2,7 +2,7 @@
 #define LINE2D_H
 #include <cmath>    // Used for fabs
 #include <string>   // Used for stringing exception messages together
-#include <Vector.h> // Used for VERY_SMALL
+#include "ConstantsConversions.h" // Used for VERY_SMALL
 
 // Remember y = mx + b from high school (secondary school for me)
 // m is the slope and b is the y-intercept
@@ -103,7 +103,7 @@ namespace MATHEX {
 
 		// Divide itself by a scalar
 		inline Line2d& operator /= (const float scalar) {
-#ifdef DEBUG 
+#ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
 				std::string errorMsg = "Divide by nearly zero ";
 				throw errorMsg;
