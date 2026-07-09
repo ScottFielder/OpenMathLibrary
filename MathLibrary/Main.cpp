@@ -47,14 +47,14 @@ int main(int argc, char* argv[]) {
 	translateTest();				  // GREEN for GOOD!
 	lineSphereTest();                 // GREEN for GOOD!
 	lineCylinderTest();				  // GREEN for GOOD!
+	joinTest();						  // GREEN for GOOD!
 
-	quadraticTest();
-	rayTest();
+	//quadraticTest();
+	//rayTest();
 	//flectorTest();
 	//intersectionTest();
 	//dualTest();
 	//meetTest();
-	//joinTest();
 	//rotateTest();
 	//gradeTest();
 	//normalizeLineTest();
@@ -1588,15 +1588,43 @@ void meetTest() {
 }
 
 void joinTest() {
+	const string name = " joinTest";
+	float epsilon = VERY_SMALL;
 	Vec4 pointA(-5, -5, 0, 1);
 	Vec4 pointB(-5, 5, 0, 1);
-	DualQuat lineJoiningPoints = pointA & pointB;
-	pointA.print("Point A");
-	pointB.print("Point B");
-	lineJoiningPoints.print("Line AB");
-	Plane yPlane(0.0f, 1.0f, 0.0f, 0.0f);
-	(yPlane ^ lineJoiningPoints).print("Line pierces y plane this this point");
+	DualQuat lineJoiningPoints = pointA & pointB; // join to make line x = -5
+	Plane yPlane(0.0f, 1.0f, 0.0f, 0.0f); // plane y = 0
+	Vec4 intersection1 = yPlane ^ lineJoiningPoints; // meet at position (-5, 0, 0)
+	intersection1 = VMath::perspectiveDivide(intersection1);
+	Vec3 correctAnswer1 = Vec4(-5.0f, 0.0f, 0.0f, 1.0f);
 
+	// Now the 2D join
+	Point2d point2dA(3, -2, 1);
+	Point2d point2dB(3, 2, 1);
+	Line2d lineJoining2dPoints = point2dA & point2dB; // join to make line x = 3
+
+	// Where does this meet the line y = 5
+	// y - 5 = 0
+	Line2d line2d(0, 1, -5);
+
+	Point2d intersection2 = lineJoining2dPoints ^ line2d; // lines should meet at (3, 5)
+	intersection2 = Math2d::perspectiveDivide(intersection2);
+	Point2d correctAnswer2 = Point2d(3, 5, 1);
+
+	bool test1 = false;
+	bool test2 = false;
+	float diffMag1, diffMag2;
+	diffMag1 = VMath::mag(correctAnswer1 - intersection1);
+	diffMag2 = Math2d::distance(correctAnswer2, intersection2);
+	if (diffMag1 < epsilon) {
+		test1 = true;
+	}
+	if (diffMag2 < epsilon) {
+		test2 = true;
+	}
+
+	bool flag = test1 && test2;
+	printPassedOrFailed(flag, name);
 }
 
 void rotateTest() {

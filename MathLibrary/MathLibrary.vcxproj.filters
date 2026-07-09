@@ -149,5 +149,29 @@
     <ClInclude Include="Fourier.h">
       <Filter>Header Files\etc</Filter>
     </ClInclude>
+    <ClInclude Include="GeometricProduct2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Join2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Dual2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Meet2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Dot2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Flector2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
+    <ClInclude Include="Math2d.h">
+      <Filter>Header Files\Extended</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
