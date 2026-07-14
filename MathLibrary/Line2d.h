@@ -104,7 +104,7 @@ namespace MATHEX {
 		// Divide itself by a scalar
 		inline Line2d& operator /= (const float scalar) {
 #ifdef _DEBUG 
-			if (std::fabs(c) < VERY_SMALL) {
+			if (std::fabs(scalar) < VERY_SMALL) {
 				std::string errorMsg = "Divide by nearly zero ";
 				throw errorMsg;
 			}
