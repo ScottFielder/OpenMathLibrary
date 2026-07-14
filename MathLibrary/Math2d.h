@@ -305,7 +305,7 @@ namespace MATHEX {
 		// Projecting a point onto a line
 		// REFERENCE: Equations from the 58:51 min mark here https://www.gdcvault.com/play/1029237/
 		// UN - Tested 2025-02-24 for Sphere-Triangle collision assignment in Game Physics 2
-		static const Point2d project(Point2d& point, const Line2d& line) {
+		static const Point2d project(const Point2d& point, const Line2d& line) {
 			return (line | point) ^ line;
 		}
 
