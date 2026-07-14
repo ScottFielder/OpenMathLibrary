@@ -258,7 +258,7 @@ namespace MATHEX {
 		static const Point2d perspectiveDivide(const Point2d& v) {
 #ifdef _DEBUG  /// If in debug mode let's worry about divide by zero or nearly zero!!! 	
 			if (fabs(v.w) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
+				std::string errorMsg = std::string(__FILE__) + ":" + std::to_string(__LINE__);
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif

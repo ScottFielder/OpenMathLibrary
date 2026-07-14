@@ -76,7 +76,7 @@ namespace MATHEX {
 		inline const Motor2d operator / (const float c) const {
 #ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
+				std::string errorMsg = std::string(__FILE__) + ":" + std::to_string(__LINE__);
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif
@@ -88,7 +88,7 @@ namespace MATHEX {
 		inline Motor2d& operator /= (const float c) {
 #ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
+				std::string errorMsg = std::string(__FILE__) + ":" + std::to_string(__LINE__);
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif

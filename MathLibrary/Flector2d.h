@@ -64,7 +64,7 @@ namespace MATHEX {
 		inline const Flector2d operator / (const float scalar) const {
 #ifdef _DEBUG 
 			if (std::fabs(scalar) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
+				std::string errorMsg = std::string(__FILE__) + ":" + std::to_string(__LINE__);
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif
@@ -76,7 +76,7 @@ namespace MATHEX {
 		inline Flector2d& operator /= (const float scalar) {
 #ifdef _DEBUG 
 			if (std::fabs(scalar) < VERY_SMALL) {
-				std::string errorMsg = __FILE__ + __LINE__;
+				std::string errorMsg = std::string(__FILE__) + ":" + std::to_string(__LINE__);
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
 #endif
