@@ -74,8 +74,8 @@ namespace MATHEX {
 
 		// Divide itself by a scalar
 		inline Flector2d& operator /= (const float scalar) {
-#ifdef DEBUG 
-			if (std::fabs(c) < VERY_SMALL) {
+#ifdef _DEBUG 
+			if (std::fabs(scalar) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
 				throw errorMsg.append(": Divide by nearly zero! ");
 			}
