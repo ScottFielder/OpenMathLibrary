@@ -86,7 +86,7 @@ namespace MATHEX {
 
 		// Divide itself by a scalar
 		inline Motor2d& operator /= (const float c) {
-#ifdef DEBUG 
+#ifdef _DEBUG 
 			if (std::fabs(c) < VERY_SMALL) {
 				std::string errorMsg = __FILE__ + __LINE__;
 				throw errorMsg.append(": Divide by nearly zero! ");
