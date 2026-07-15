@@ -33,6 +33,7 @@ namespace MATHEX {
 	}
 
 	// A plane and a plane meet at a line
+	// This will return a line infinitely far away (only e01, e02, e03 survive) if planes are parallel
 	inline const DualQuat meet (const Plane& p1, const Plane& p2) {
 		DualQuat result;
 		result.real = 0.0f;

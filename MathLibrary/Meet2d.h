@@ -15,7 +15,7 @@ namespace MATHEX {
 	// A line and a line meet at a point
 	// TODO (UN): Just had a thought. Why don't I just multiply the objects together 
 	// and just return the higher grade part? Best to check this at some point (get it!?)
-	// This will return zero if the lines are parallel I think
+	// This will return a point infinitely far away (e12 = 0) if lines are parallel
 	inline const Point2d meet(const Line2d& l1, const Line2d& l2) {
 		Point2d result;
 		Motor2d m = l1 * l2;
