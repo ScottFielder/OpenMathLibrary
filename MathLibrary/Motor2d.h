@@ -149,8 +149,8 @@ namespace MATHEX {
 		}
 
 		// Add the other way around too
-		friend const Motor2d operator + (const float w_, const Motor2d& dq) {
-			return dq + w_;
+		friend const Motor2d operator + (const float w_, const Motor2d& m) {
+			return m + w_;
 		}
 
 		void print(const char* comment = nullptr) const {
