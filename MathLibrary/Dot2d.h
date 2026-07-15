@@ -43,7 +43,7 @@ namespace MATHEX {
 
 	// NOTE (UN): 
 	// Dotting a point with another point always returns the negative of the the two e12 coefficients multiplied together
-	// So if the two points are normalized, you always get 1
+	// So if the two points are normalized, you always get -1
 	// This will be confusing for those of us that use the VMath::dot, so I wont code it here
 }
 #endif

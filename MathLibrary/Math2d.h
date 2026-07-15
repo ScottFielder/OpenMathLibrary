@@ -38,7 +38,7 @@ namespace MATHEX {
 		static const Point2d inverse(const Point2d& p) {
 			Point2d result = reverse(p);
 			float w = p.e12; // magnitude means different things to a Vec3 versus a Point2d so I wont use p dot p
-			result = result / pow(w, 2);
+			result = result / (w * w);
 			return result;
 		}
 
@@ -262,14 +262,14 @@ namespace MATHEX {
 		// Ignore the e01 & e02 bits
 		static const float mag(const Motor2d& m) {
 			return sqrt(m.real * m.real + m.e12 * m.e12);
-			// could alse return sqrt(magSquared(m));
+			// could also return sqrt(magSquared(m));
 		}
 
 		// Return the magnitude of the bits that aren't infinitely far away
 		// ie ignore e0
 		static const float mag(const Line2d& l) {
 			return sqrt(l.e1 * l.e1 + l.e2 * l.e2);
-			// could alse return sqrt(magSquared(line));
+			// could also return sqrt(magSquared(line));
 		}
 
 		// NOTE (UN): I was thinking to make a mag(Point2d) function but I think that will get confusing
@@ -319,8 +319,8 @@ namespace MATHEX {
 			// Do a similar shortest-path trick as QMath::slerp
 			// It also solves the problem of everything blowing up if m = -1
 			float cosThetaOverTwo = m.real;
-			if (cosThetaOverTwo < 0.0f) {		/// if cosTheta is negative, the angle is oblique. The shortest path 
-				return normalize(1.0f + (-m));  /// would be the other representation of the same motor = -m 
+			if (cosThetaOverTwo < 0.0f) {		// if cosTheta is negative, the angle is oblique. The shortest path 
+				return normalize(1.0f + (-m));  // would be the other representation of the same motor = -m 
 			}
 			return normalize(1.0f + m);
 		}
