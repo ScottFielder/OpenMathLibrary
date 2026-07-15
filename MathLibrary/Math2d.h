@@ -21,8 +21,8 @@ namespace MATHEX {
 
 		// This is a no-op if the line is normalized, so there is no point in doing this in case you are!
 		static const Line2d inverse(const Line2d& line) {
-			float magnitude = mag(line);
-			return line / pow(magnitude, 2);;
+			float magSquared = line | line; // dot the line with itself
+			return line / magSquared;
 		}
 
 		// Flip the sign on each bivector part
@@ -37,8 +37,8 @@ namespace MATHEX {
 		// Ensure p * p_inverse = 1
 		static const Point2d inverse(const Point2d& p) {
 			Point2d result = reverse(p);
-			float magnitude = p.e12;
-			result = result / pow(magnitude, 2);
+			float w = p.e12; // magnitude means different things to a Vec3 versus a Point2d so I wont use p dot p
+			result = result / pow(w, 2);
 			return result;
 		}
 
@@ -56,8 +56,8 @@ namespace MATHEX {
 		// Ensure m * m_inverse = 1
 		static const Motor2d inverse(const Motor2d& m) {
 			Motor2d result = reverse(m);
-			float magnitude = mag(result);
-			result = result / pow(magnitude, 2);
+			float magSquared = m | m; // dot the motor with itself
+			result = result / magSquared;
 			return result;
 		}
 
@@ -200,13 +200,16 @@ namespace MATHEX {
 		// Return the translation vector from the motor
 		static const Point2d getTranslation(const Motor2d& m)
 		{
+			// NOTE (UN): I've stolen this from DQMath
 			// We are doing old school dual quaternion math here
 			// Where a dual quaternion is literally made up of two quaternions
 			// A real one (that holds the rotation), and a dual one (that encodes translation)
 			// So dual quaternion = q_rot + dualBasis * q_t * q_rot
 			// Find translation from the last bit of the dual quaternion
-			Motor2d dualPart = translate(m);
-			Motor2d realPart = rotate(m);
+			// First make sure its a valid motor coming in
+			Motor2d normalizedMotor = normalize(m);
+			Motor2d dualPart = translate(normalizedMotor);
+			Motor2d realPart = rotate(normalizedMotor);
 			// Rebuild the translation using t * r.conjugate * 2
 			// To conjugate our dual quaternion, we flip the sign on the axis of the real part 
 			realPart.e12 *= -1.0f;

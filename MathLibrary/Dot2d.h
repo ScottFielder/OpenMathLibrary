@@ -32,11 +32,19 @@ namespace MATHEX {
 		return dot(l1, l2);
 	}
 
-	// TODO (UN): 
+	// Not sure what dotting a motor with another motor means geometrically, 
+	// but it should return it's magnitude squared.
+	inline float dot(const Motor2d& m1, const Motor2d& m2) {
+		return (m1 * m2).real;
+	}
+	inline float operator | (const Motor2d& m1, const Motor2d& m2) {
+		return dot(m1, m2);
+	}
+
+	// NOTE (UN): 
 	// Dotting a point with another point always returns the negative of the the two e12 coefficients multiplied together
-	// So if the two points are normalized, you always get -1
-	// Not sure what that is helpful for so I skipped that
-	// Also not sure what dotting a motor with another motor means either, so i skipped that too
+	// So if the two points are normalized, you always get 1
+	// This will be confusing for those of us that use the VMath::dot, so I wont code it here
 }
 #endif
 
