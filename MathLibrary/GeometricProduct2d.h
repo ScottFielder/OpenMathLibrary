@@ -26,9 +26,14 @@ namespace MATHEX {
 	// Such that A / B = A * inverse(B)		in that order
 	inline const Motor2d operator / (const Motor2d& a, const Motor2d& b) {
 		Motor2d inverseB = b;
+		// First reverse it
 		inverseB.e12 *= -1.0f;
 		inverseB.e01 *= -1.0f;
 		inverseB.e02 *= -1.0f;
+		// Then divide by mag^2
+		float magSquared = inverseB.real * inverseB.real + inverseB.e12 * inverseB.e12;
+		// The next line will blow up if b is infinitely far way, there is no inverse in that case
+		inverseB = inverseB / magSquared;
 		return a * inverseB;
 	}
 

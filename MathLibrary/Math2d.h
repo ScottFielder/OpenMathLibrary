@@ -14,28 +14,50 @@ namespace MATHEX {
 	struct Math2d {
 
 		// As a line is just grade 1, there is nothing to swap
-		// It is it's own inverse, so just return the line
 		// This is a no-op, so there is no point in doing this in case you are!
-		static const Line2d inverse(const Line2d& line) {
+		static const Line2d reverse(const Line2d& line) {
 			return line;
 		}
 
+		// This is a no-op if the line is normalized, so there is no point in doing this in case you are!
+		static const Line2d inverse(const Line2d& line) {
+			float magnitude = mag(line);
+			return line / pow(magnitude, 2);;
+		}
+
 		// Flip the sign on each bivector part
-		static const Point2d inverse(const Point2d& p) {
-			Point2d result = p;
+		static const Point2d reverse(const Point2d& p) {
+			Point2d result;
 			result.e20 = -p.e20;
 			result.e01 = -p.e01;
 			result.e12 = -p.e12;
 			return result;
 		}
 
+		// Ensure p * p_inverse = 1
+		static const Point2d inverse(const Point2d& p) {
+			Point2d result = reverse(p);
+			float magnitude = p.e12;
+			result = result / pow(magnitude, 2);
+			return result;
+		}
+
 		// Flip the sign on each bivector part
-		static const Motor2d inverse(const Motor2d& m) {
-			Motor2d result = m;
+		static const Motor2d reverse(const Motor2d& m) {
+			Motor2d result;
 			// Don't flip the sign on the real part, just the others
-			result.e01 = -m.e01;
-			result.e02 = -m.e02;
-			result.e12 = -m.e12;
+			result.real =  m.real;
+			result.e01  = -m.e01;
+			result.e02  = -m.e02;
+			result.e12  = -m.e12;
+			return result;
+		}
+
+		// Ensure m * m_inverse = 1
+		static const Motor2d inverse(const Motor2d& m) {
+			Motor2d result = reverse(m);
+			float magnitude = mag(result);
+			result = result / pow(magnitude, 2);
 			return result;
 		}
 
@@ -116,14 +138,14 @@ namespace MATHEX {
 		static const Point2d rigidTransformation(const Motor2d& m, const Point2d& p) {
 			// Weirdly enough, the sandwich with a point returns a motor but I think the real part is always zero
 			// so I've just grabbed the point part of the motor
-			Point2d result = getPoint(m * p * inverse(m));
+			Point2d result = getPoint(m * p * reverse(m));
 			return result;
 		}
 
 		static const Line2d rigidTransformation(const Motor2d& m, const Line2d& l) {
 			// Weirdly enough, the sandwich with a line returns a weird e012 plus a line thing
 			// so I've just grabbed the line part
-			Line2d result = (m * l * inverse(m)).line;
+			Line2d result = (m * l * reverse(m)).line;
 			return result;
 		}
 
@@ -225,33 +247,27 @@ namespace MATHEX {
 			return result;
 		}
 
-		// Return magnitude of the rotational part or the infinite part
+		// Return magnitude of the rotator (1 + e12 terms) or translator (1 + e01 + e2 terms)
+		// Ignore the e01 & e02 bits
 		static const float mag(const Motor2d& m) {
-			// Figure out whether this is a pure rotation or not
-			float rotMag = sqrt(m.real * m.real + m.e12 * m.e12);
-			if (rotMag < VERY_SMALL) {
-				// return infinite mag instead here (the bits that have to do with translation)
-				float infiniteMag = sqrt(m.e01 * m.e01 + m.e02 * m.e02);
-				return infiniteMag;
-			}
-			// Otherwise just use the rotational magnitude
-			return rotMag;
+			return sqrt(m.real * m.real + m.e12 * m.e12);
 		}
 
-
-		// TODO (UN): I'm only returning the normal part of the line, should I call this the Euclidean mag?
+		// Return the magnitude of the bits that aren't infinitely far away
+		// ie ignore e0
 		static const float mag(const Line2d& l) {
-			float normalMag = sqrt(l.e1 * l.e1 + l.e2 * l.e2);
-			return normalMag;
+			return sqrt(l.e1 * l.e1 + l.e2 * l.e2);
 		}
 
-		// Divide by the magnitude of the rotational part or the infinite part
+		// NOTE (UN): I was thinking to make a mag(Point2d) function but I think that will get confusing
+		// In PGA2D, the magnitude squared of a point = e12 * e12 or w * w
+		// In regular 2D vectors, it would be x^2 + y^2
+		 
 		static const Motor2d normalize(const Motor2d& m)
 		{
 			return m / mag(m);
 		}
 
-		// Divide by the magnitude of the normal or the e0 part
 		static const Line2d normalize(const Line2d& line)
 		{
 			return line / mag(line);
