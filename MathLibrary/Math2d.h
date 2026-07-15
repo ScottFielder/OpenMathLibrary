@@ -21,8 +21,8 @@ namespace MATHEX {
 
 		// This is a no-op if the line is normalized, so there is no point in doing this in case you are!
 		static const Line2d inverse(const Line2d& line) {
-			float magSquared = line | line; // dot the line with itself
-			return line / magSquared;
+			float magnitudeSquared = magSquared(line); // could also dot the line with itself (as it is its own reverse), but that doesnt work for motors
+			return line / magnitudeSquared;
 		}
 
 		// Flip the sign on each bivector part
@@ -56,8 +56,8 @@ namespace MATHEX {
 		// Ensure m * m_inverse = 1
 		static const Motor2d inverse(const Motor2d& m) {
 			Motor2d result = reverse(m);
-			float magSquared = m | m; // dot the motor with itself
-			result = result / magSquared;
+			float magnitudeSquared = magSquared(m); // dotting the motor with itself wont work
+			result = result / magnitudeSquared;
 			return result;
 		}
 
@@ -250,16 +250,26 @@ namespace MATHEX {
 			return result;
 		}
 
+		static const float magSquared(const Motor2d& m) {
+			return (m * reverse(m)).real;
+		}
+
+		static const float magSquared(const Line2d& line) {
+			return (line * reverse(line)).real;
+		}
+
 		// Return magnitude of the rotator (1 + e12 terms) or translator (1 + e01 + e2 terms)
 		// Ignore the e01 & e02 bits
 		static const float mag(const Motor2d& m) {
 			return sqrt(m.real * m.real + m.e12 * m.e12);
+			// could alse return sqrt(magSquared(m));
 		}
 
 		// Return the magnitude of the bits that aren't infinitely far away
 		// ie ignore e0
 		static const float mag(const Line2d& l) {
 			return sqrt(l.e1 * l.e1 + l.e2 * l.e2);
+			// could alse return sqrt(magSquared(line));
 		}
 
 		// NOTE (UN): I was thinking to make a mag(Point2d) function but I think that will get confusing

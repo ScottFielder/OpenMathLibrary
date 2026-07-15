@@ -32,11 +32,11 @@ namespace MATHEX {
 		return dot(l1, l2);
 	}
 
-	// Not sure what dotting a motor with another motor means geometrically, 
-	// but it should return it's magnitude squared.
+	// TODO (UN) Not sure what dotting a motor with another motor means geometrically, 
 	inline float dot(const Motor2d& m1, const Motor2d& m2) {
 		return (m1 * m2).real;
 	}
+
 	inline float operator | (const Motor2d& m1, const Motor2d& m2) {
 		return dot(m1, m2);
 	}
