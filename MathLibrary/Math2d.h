@@ -140,7 +140,10 @@ namespace MATHEX {
 			// Find the angle using the real part of the motor
 			// R = cos(theta/2) - sin(theta/2) * e12
 			float cosThetaOver2 = m.real;
-			float thetaOver2 = acos(cosThetaOver2);
+			float sinThetaOver2 = -m.e12;
+			// atan2 is best to get the angle as it handles all four quadrants
+			// and returns an angle between -180 and 180
+			float thetaOver2 = atan2(sinThetaOver2, cosThetaOver2);
 			float angleRad = thetaOver2 * 2.0f;
 			float result = angleRad * RADIANS_TO_DEGREES;
 			return result;
