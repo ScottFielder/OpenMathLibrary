@@ -118,9 +118,14 @@ namespace MATHEX {
 		return result;
 	}
 
-	// Turns out the inverse of a Line2d is the exact same Line2d, so A / B = A * B
+	// Turns out the inverse of a Line2d is the exact same Line2d, so A / B = A * B if they are normalized
+	// Just remember to divide out by magSquared for the inversed line
 	inline const Motor2d operator / (const Line2d& a, const Line2d& b) {
-		return a * b;
+		Line2d inverseB = b;
+		float magSquared = inverseB.e1 * inverseB.e1 + inverseB.e2 * inverseB.e2;
+		// The next line will blow up if b is infinitely far way, there is no inverse in that case
+		inverseB = inverseB / magSquared;
+		return a * inverseB;
 	}
 
 	// Point 1 * Point 2 = a Motor2d
@@ -140,9 +145,14 @@ namespace MATHEX {
 	// Such that A / B = A * inverse(B)		in that order
 	inline const Motor2d operator / (const Point2d& a, const Point2d& b) {
 		Point2d inverseB = b;
+		// First reverse it
 		inverseB.e12 *= -1.0f;
 		inverseB.e01 *= -1.0f;
 		inverseB.e20 *= -1.0f;
+		// Then divide by mag^2
+		float magSquared = inverseB.e12 * inverseB.e12;
+		// The next line will blow up if b is infinitely far way, there is no inverse in that case
+		inverseB = inverseB / magSquared;
 		return a * inverseB;
 	}
 

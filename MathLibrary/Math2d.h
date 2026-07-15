@@ -304,7 +304,7 @@ namespace MATHEX {
 		// I named it squareRoot to avoid any clashes with std::sqrt in user code
 		static const Motor2d squareRoot(const Motor2d& m) {
 			// Do a similar shortest-path trick as QMath::slerp
-			// It also solves everything blowing up if m = -1
+			// It also solves the problem of everything blowing up if m = -1
 			float cosThetaOverTwo = m.real;
 			if (cosThetaOverTwo < 0.0f) {		/// if cosTheta is negative, the angle is oblique. The shortest path 
 				return normalize(1.0f + (-m));  /// would be the other representation of the same motor = -m 
