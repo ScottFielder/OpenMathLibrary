@@ -14,7 +14,8 @@ namespace MATHEX {
 		return dot(l, p);
 	}
 
-	// You should get the same line if you swap the order as the dot product is commutative
+	// You should get the same line if you swap the order, just all signs are flipped
+	// Means that the line is oriented the other way
 	inline const Line2d dot(const Point2d& p, const Line2d& l) {
 		return (p * l).line;
 	}
